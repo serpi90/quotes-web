@@ -7,7 +7,6 @@ $db_name = 'quotes';
 
 // Se requiere sendmail instalado en el servidor
 $quotesMail = 'mail-to-send-quotes-to@my-mail.com';
-//$quotesMail = 'lucasgodon@mercapsoftware.com';
 $fromMail = 'sender-address@my-mail.com';
 $smtp = '192.168.1.1';
 
