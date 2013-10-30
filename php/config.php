@@ -11,4 +11,8 @@ $quotesMail = 'mail-to-send-quotes-to@my-mail.com';
 $fromMail = 'sender-address@my-mail.com';
 $smtp = '192.168.1.1';
 
+$newQuoteSubject = 'Quote Fresca!!!!';
+$dailyQuoteSubject = 'La Quote del dia';
+
 ?>
+

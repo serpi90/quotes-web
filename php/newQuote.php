@@ -51,5 +51,9 @@
 
 	$qr->addQuote( $quote, $quoted );
 	$result['success'] = TRUE;
+
+	$quote = 'Nueva quote: '.$quote;
+	$result['mail'] = sendMail( $quote,  $newQuoteSubject );
 	echo json_encode($result);
 ?>
+
