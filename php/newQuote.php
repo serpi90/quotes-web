@@ -52,7 +52,7 @@
 	$qr->addQuote( $quote, $quoted );
 	$result['success'] = TRUE;
 
-	$quote = 'Nueva quote: '.$quote;
+	$quote = 'Nueva quote: <br/>&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$quote.'</i>';
 	$result['mail'] = sendMail( $quote,  $newQuoteSubject );
 	echo json_encode($result);
 ?>

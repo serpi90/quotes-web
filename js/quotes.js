@@ -7,7 +7,7 @@ function initDocument() {
 	$('#new-quote-submit').click( newQuote );
 	$('#new-quote-cancel').click( function( event ) {
 		$('#new-quote-quote').val('');
-		$('#new-quote-quoted').select2( 'val', '');
+		$('#new-quote-quoted').select2('val', '');
 		$('#new-quote-success').hide();
 		$('#new-quote-info').hide();
 		$('#new-quote-warning').hide();
@@ -15,26 +15,19 @@ function initDocument() {
 		});
 	$("#new-quote-quoted").select2({placeholder: "Quoteado(s)"});
 	$('#new-quote-quoted-chk').click( function( event ) {
-		var quotedUrl = 'php/quoted.php';
-		if( event.target.checked ) {
-			quotedUrl += '?all';
-		}
+		var quotedUrl = event.target.checked ? 'php/quoted.php?all' : 'php/quoted.php';
 		$.ajax({ url: quotedUrl, success : loadQuotedSelect });
 	});
 	$('#side-panel-quoted-all').click( function( event ) {
-		var quotedUrl = 'php/quoted.php';
 		if( event.target.value == "on" ) {
 			event.target.value = "off";
 		} else {
 			event.target.value = "on";
 		}
-		if( event.target.value == "on" ) {
-			quotedUrl += '?all';
-		}
+		var quotedUrl =  event.target.value == "on" ? 'php/quoted.php?all' : 'php/quoted.php';
 		$.ajax({ url: quotedUrl, success : loadQuotedList });
 	});
 	$('#new-quote-quoted-chk').tooltip( );
-
 }
 
 function loadSelectedYearQuotes( event ) {
@@ -163,12 +156,12 @@ function loadYearList( json ) {
 	var option = $(document.createElement( 'OPTION' ));
 	var list = $('#side-panel-quotes-list');
 	list.html('');
-	
+
 	var title = option.clone( );
 	title.attr( 'disabled', true );
 	title.text( 'Año' );
 	list.append( title );
-	
+
 	var year;
 	for( var i=0; i < array.length ; i++ ) {
 		year = option.clone( );
@@ -184,76 +177,132 @@ function loadQuotes( json ) {
 	var panel = $('#quotes-panel');
 	var title = $('#title');
 
-	var table = $(document.createElement('TABLE'));
-	table.addClass('table');
-	table.addClass('table-striped');
-	table.addClass('table-condensed');
-	table.addClass('no-margin-bot');
-
-	var body = $(document.createElement('DIV'));
-	body.addClass( 'panel-body' );
-	body.addClass( 'panel-quotes' );
-	body.append( table );
-	
-	var tbody = $(document.createElement('TBODY'));
-	table.append( tbody );
-
-	var	div = $(document.createElement('DIV'));
-	div.addClass( 'panel' );
-	div.addClass( 'panel-default' );
-	div.addClass( 'panel-no-border-top' );
-	div.append( body );
-	
-
 	panel.html('');
 	panel.append( title );
-	panel.append( div );
+	title.html( title.text( ) + ' <small>(' + array.length +  ')</small>');
 
-	var tr = $(document.createElement('TR'));
-	var td = $(document.createElement('TD'));
+	var	container = quoteGroupPanel( );
+	var body = quotesPanel( );
+	var table = customTable( );
+	var tbody = $(document.createElement('TBODY'));
 
-	var o;
-	var number;
-	var quote;
-	var row;
+
+	container.addClass( 'panel-no-border-top' );
+
+	table.append( tbody );
+	body.append( table );
+	container.append( body );
+	panel.append( container );
+
 	for( var i=0; i < array.length ; i++ ) {
-		o = array[i];
-		
-		row = tr.clone( );
-		tbody.append( row );
-		
-		number = td.clone( );
-		number.addClass( 'number' )
-		number.text( o.number );
-		row.append( number );
-		
-		quote = td.clone( );
-		quote.html( o.quote );
-		row.append( quote );
+		var o = array[i];
+		tbody.append( tableRowFromQuote( o.number, o.quote ) );
 	}
 	panel.scrollTop(0);
 }
 
 function loadQuotesWithYearSeparation( json ) {
 	var array = $.parseJSON( json );
-
 	var panel = $('#quotes-panel');
 	var title = $('#title');
+	title.html( title.text( ) + ' <small>' + array.length + ')</small>');
 
 	panel.html('');
 	panel.append( title );
-
-	var	div = $(document.createElement('DIV'));
 
 	var last;
 	if( array.length > 0 ) {
 		last = array[0];
 	}
-	var accordion = div.clone( );
-	accordion.addClass( 'panel' );
-	accordion.addClass( 'panel-default' );
+	var head;
+	var quoteCount;
+	var count;
+	for( var i=0; i < array.length ; i++ ) {
+		var o = array[i];
+		if( o.year != last.year || i == 0 ) {
+			var accordion = quoteGroupPanel( );
+			if( head ) {
+				head.children().first().append(yearQuoteCount(quoteCount));
+			}
+			head = accordionHead( o.year );
+			var body = quotesPanel( );
+			body.attr( 'id' , 'y' + o.year );
 
-	var head = div.clone( );
+
+			accordion.html( head );
+			accordion.append( body );
+
+			panel.append( accordion );
+
+			if( i == 0 ) {
+				body.addClass( 'in' );
+			} else {
+				body.removeClass( 'in' );
+				body.addClass( 'collapse' );
+			}
+			var table = customTable( );
+			body.html( table );
+
+			var tbody = $(document.createElement('TBODY'));
+			table.html( tbody );
+			quoteCount = 0;
+		}
+		last = o;
+		tbody.append( tableRowFromQuote( o.number, o.quote ) );
+		quoteCount++;
+	}
+	
+	head.children().first().append(yearQuoteCount(quoteCount));
+	panel.scrollTop(0);
+}
+
+function yearQuoteCount( quoteCount ) {
+	var count = document.createElement('SMALL');
+	count.classList.add('pull-right');
+	count.textContent = quoteCount + ( quoteCount == 1 ? ' quote': ' quotes' );
+	return count;	
+}
+
+function tableRowFromQuote( number, quote ) {
+	var tr = $(document.createElement('TR'));
+	var td = $(document.createElement('TD'));
+
+	td.addClass( 'number' );
+	td.text( number );
+	tr.append( td );
+
+	td = $(document.createElement('TD'));
+	td.html( quote );
+	tr.append( td );
+
+	return tr;
+}
+
+function customTable( ) {
+	var table = $(document.createElement('TABLE'));
+	table.addClass('table');
+	table.addClass('table-striped');
+	table.addClass('table-condensed');
+	table.addClass('no-margin-bot');
+	return table;
+}
+
+function quotesPanel( ) {
+	var panel = $(document.createElement('DIV'));
+	panel.addClass( 'panel-body' );
+	panel.addClass( 'panel-quotes' );
+	return panel;
+}
+
+function quoteGroupPanel( ){
+	var panel = $(document.createElement('DIV'));
+	panel.addClass( 'panel' );
+	panel.addClass( 'panel-default' );
+	return panel;
+}
+
+function accordionHead( year ) {
+	var head = $(document.createElement('DIV'));
 	head.addClass( 'panel-heading' );
 	head.addClass( 'no-border-bottom' );
 
@@ -264,75 +313,11 @@ function loadQuotesWithYearSeparation( json ) {
 	anchor.addClass( 'accordion-toggle' );
 	anchor.attr( 'data-toggle', 'collapse' );
 	anchor.attr( 'data-parent', '#quotes-panel' );
+	anchor.attr( 'href' , '#y'+year );
+	anchor.text( year );
 
-	var body = div.clone( );
-	body.addClass( 'panel-body' );
-	body.addClass( 'panel-collapse' );
-	body.addClass( 'panel-quotes' );
+	title.html( anchor );
+	head.html( title );
 
-	var row = div.clone( );
-	row.addClass( 'row' );
-	row.addClass( 'row-quote' );
-
-	var tablePrototype = $(document.createElement('TABLE'));
-	var tbodyPrototype = $(document.createElement('TBODY'));
-	var tr = $(document.createElement('TR'));
-	var td = $(document.createElement('TD'));
-
-	tablePrototype.addClass('table');
-	tablePrototype.addClass('table-striped');
-	tablePrototype.addClass('table-condensed');
-	tablePrototype.addClass('no-margin-bot');
-
-	var o;
-	var number;
-	var quote;
-	var row;
-	var table;
-	var tbody;
-	
-	for( var i=0; i < array.length ; i++ ) {
-		o = array[i];
-		if( o.year != last.year || i == 0 ) {
-			anchor.attr( 'href' , '#y'+o.year );
-			anchor.text( o.year );
-			title.html( anchor );
-			anchor = anchor.clone( );
-			head.html( title );
-			title = title.clone( )
-			accordion.html( head );
-			head = head.clone( )
-			body = body.clone( );
-			body.attr( 'id' , 'y' + o.year );
-			accordion.append( body );
-
-			panel.append( accordion );
-			accordion = accordion.clone( );
-			if( i == 0 ) {
-				body.addClass( 'in' );
-			} else {
-				body.removeClass( 'in' );
-				body.addClass( 'collapse' );
-			}
-			table = tablePrototype.clone( );
-			body.html( table );
-
-			tbody = tbodyPrototype.clone( );
-			table.html( tbody );
-		}
-		last = o;
-		
-		row = tr.clone( );
-		tbody.append( row );
-		
-		number = td.clone( );
-		number.addClass( 'number' )
-		number.text( o.number );
-		row.append( number );
-		
-		quote = td.clone( );
-		quote.html( o.quote );
-		row.append( quote );
-	}
-	panel.scrollTop(0);
+	return head;
 }

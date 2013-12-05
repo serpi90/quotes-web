@@ -6,6 +6,6 @@ $qr = new QuoteRepository( $db, $qdr );
 
 $dq = $qr->getDailyQuote( );
 
-sendMail( $dq->number( ).' - '.$dq->quote( ), $dailyQuoteSubject );
+sendMail( '&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$dq->number( ).') '.$dq->quote( ).'</i>' , $dailyQuoteSubject );
 ?>
 

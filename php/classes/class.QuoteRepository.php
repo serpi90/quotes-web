@@ -91,7 +91,7 @@ class QuoteRepository {
 		$number = $this->getLastQuoteNumber( ) + 1;
 		$year = date( 'Y' );
 		if( !isset($this->insertStatement) or $this->insertStatement === null ) {
-			$this->insertStatement = $this->db_connection->prepare("INSERT INTO Quote (number,quote,year) VALUES (?,?,?)");
+			$this->insertStatement = $this->db_connection->prepare("INSERT INTO Quote (number,quote,year) VALUES (?,?,(SELECT value FROM Settings WHERE field = 'currentYear'))");
 		}
 		$this->insertStatement->bind_param( 'isi', $number, $quote, $year ) or die( $this->insertStatement->error );
 		$this->insertStatement->execute( ) or die( $this->insertStatement->error );
