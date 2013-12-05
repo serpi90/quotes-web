@@ -205,7 +205,7 @@ function loadQuotesWithYearSeparation( json ) {
 	var array = $.parseJSON( json );
 	var panel = $('#quotes-panel');
 	var title = $('#title');
-	title.html( title.text( ) + ' <small>' + array.length + ')</small>');
+	title.html( title.text( ) + ' <small>(' + array.length + ')</small>');
 
 	panel.html('');
 	panel.append( title );

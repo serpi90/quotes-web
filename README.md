@@ -1,8 +1,8 @@
 Installation
 ============
 
-1 - Import sql/tables.sql into your desired mysql database.
-2 - Configure php/config.php with database and mail parameters, using config.default.php as template.
+- Import sql/tables.sql into your desired mysql database.
+- Configure php/config.php with database and mail parameters, using config.default.php as template.
 
 TODO
 ====
