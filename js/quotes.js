@@ -321,3 +321,4 @@ function accordionHead( year ) {
 
 	return head;
 }
+
