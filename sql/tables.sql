@@ -29,6 +29,11 @@ CREATE TABLE IF NOT EXISTS R_Quoted_Quote (
   KEY idQuote (idQuote)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+CREATE TABLE IF NOT EXISTS Settings (
+  `key` varchar(32) COLLATE utf8_bin NOT NULL,
+  `value` varchar(32) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 ALTER TABLE `QuotedAlias`
   ADD CONSTRAINT QuotedAlias_ibfk_1 FOREIGN KEY (idQuoted) REFERENCES Quoted (idQuoted);
@@ -36,4 +41,6 @@ ALTER TABLE `QuotedAlias`
 ALTER TABLE `R_Quoted_Quote`
   ADD CONSTRAINT R_Quoted_Quote_ibfk_1 FOREIGN KEY (idQuote) REFERENCES Quote (idQuote),
   ADD CONSTRAINT R_Quoted_Quote_ibfk_2 FOREIGN KEY (idQuoted) REFERENCES Quoted (idQuoted);
+
+INSERT INTO Settings (`key`, `value`) VALUES ('currentYear', '2014');
 
