@@ -7,8 +7,5 @@ Installation
 TODO
 ====
 
-Add administration page
-- Edit and remove quotes.
-- Add, edit, and manage visibility of users.
-
+- Add a graphs of most quoted users and things like that.
 

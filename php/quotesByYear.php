@@ -1,7 +1,7 @@
 <?php
 	if( !isset( $_REQUEST['y'] ) ) {
 		$result['error'] = TRUE;
-		$result['errorDescription'] = 'Parametro: y (Año) ausente';
+		$result['errorDescription'] = 'Parametro: `y` (Año) ausente';
 		die( json_encode( $result ) );
 	}
 

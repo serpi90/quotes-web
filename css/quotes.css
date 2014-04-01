@@ -1,60 +1,61 @@
-@media only screen and (min-width: 1000px) {
-	#side-panel,#quotes-panel {
-		height: 100%;
-		overflow-y: auto;
+/* Navigation bar */
+
+.navbar {
+	margin-bottom: 0px;
+}
+
+@media (min-width: 700px) {
+	#navbar-years-group {
+		float: left;
+		margin-right: 10px;
+		max-width: 135px;
+	}
+	#navbar-quoted-group {
+		float: left;
+		margin-right: 10px;
+		max-width: 365px;
 	}
 }
 
-#side-panel {
-	background-color: #f7f5fa;
-}
-
 .nav.nav-pills.nav-stacked.nav-condensed > li > a {
-   padding-top: 2px;
-   padding-bottom: 2px;
    border: 1px solid #d7d5da;
+   padding-bottom: 2px;
+   padding-top: 2px;
 }
 
-.nav>li>a:hover,.nav>li>a:focus {
+.nav>li>a:hover,
+.nav>li>a:focus {
 	color: black;
 }
 
-div#main-container {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
-
-h1,h3,th {
+/* Body */
+h1,
+h3,
+th {
 	text-align: center;
 }
 
-#new-quote-success,#new-quote-info,#new-quote-warning,#new-quote-danger {
-	display: none;
-}
-
-textarea#new-quote-quote {
+#new-quote-quote {
 	resize: vertical;
 }
 
-div.panel.panel-default.panel-no-border-top {
+.panel.panel-default.panel-no-border-top {
 	border-top: 0;
 }
 
-div.no-border-bottom {
+.no-border-bottom {
 	border-bottom: 0;
 }
 
-div.panel-quotes {
+.panel-quotes {
 	padding: 0;
 }
 
-table.no-margin-bot {
+.no-margin-bot {
 	margin-bottom: 0;
 }
 
-td.number {
+.number {
 	width: 50px;
+  font-style: italic;
 }

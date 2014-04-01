@@ -30,6 +30,10 @@ class Quote {
 	public function quote ( ) {
 		return $this->quote;
 	}
+
+	public function quoted ( ) {
+		return $this->quoted;
+	}
 	
 	public function addQuoted( $quoted ) {
 		if( !isset( $this->quoted[ $quoted->idQuoted( ) ] ) ) {

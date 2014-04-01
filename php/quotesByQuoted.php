@@ -1,7 +1,7 @@
 <?php
 	if( !isset( $_REQUEST['q'] ) ) {
 		$result['error'] = TRUE;
-		$result['errorDescription'] = 'Parametro: q (QuotedId) ausente';
+		$result['errorDescription'] = 'Parametro: `q` (QuotedId) ausente';
 		die( json_encode( $result ) );
 	}
 	$q = (int)$_REQUEST['q'];

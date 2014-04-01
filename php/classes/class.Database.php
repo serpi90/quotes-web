@@ -24,6 +24,14 @@ class Database {
 		}
 		return $result;
 	}
+  
+  public function nonEscapedQuery( $query ) {
+		$result = $this->connection->query( $query );
+		if ( $result === FALSE ) {
+			die ( $this->connection->error );
+		}
+		return $result;
+	}
 	
 	public function __destruct( ) {
 		$this->connection->close( );

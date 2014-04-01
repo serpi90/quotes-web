@@ -2,10 +2,12 @@
 	if( !isset($_REQUEST['quote']) or empty($_REQUEST['quote']) ) {
 		$result['error'] = TRUE;
 		$result['errorDescription'] = 'No se ingreso quote';
+		$result['errorDetail'] = 'Parametro: `quote` ausente';
 		die(json_encode($result));
 	} else if ( !isset($_REQUEST['quoted']) or empty($_REQUEST['quoted']) ) {
 		$result['error'] = TRUE;
 		$result['errorDescription'] = 'Debe elegirse al menos un quoteado';
+    $result['errorDetail'] = 'Parametro: `quoted` (QuotedId) ausente';
 		die(json_encode($result));
 	}
 	$quote = utf8_decode( $_REQUEST['quote'] );

@@ -9,7 +9,7 @@ class Quoted {
 
 	public function __construct( ) {
 		$this->idQuote = (int) $this->idQuoted;
-		$this->dipslay = (bool) $this->display;
+		$this->display = (bool) $this->display;
 		$this->name = utf8_encode( $this->name );
 		$this->quotes = array( );
 		$this->alias = array( );
