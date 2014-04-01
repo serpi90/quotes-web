@@ -218,17 +218,14 @@ function QuotesView( ) {
     this.container.children( ).remove( );
     this.container.append( title( titleText ) );
     this.container.append( subtitle( quotes.length ) );
-    var last = quotes[0];
+    var previous = quotes[0];
+    var last = quotes[quotes.length-1];
     var first = true;
     var count = 0;
     var self = this;
-    var aPanel;
-    var aPanelHead;
-    var aPanelBody;
-    var aTable;
-    var tBody;
+    var aPanel, aPanelHead, aPanelBody, aTable, tBody;
     quotes.forEach( function( quote ) {
-      if( first || quote.year != last.year ) {
+      if( first || quote.year != previous.year ) {
         aPanel = panel( );
         self.container.append( aPanel );
         if( aPanelHead ) {
@@ -255,8 +252,13 @@ function QuotesView( ) {
         count = 0;
       }
       tBody.append( tableRowFrom( quote.number, quote.quote ) );
-      last = quote;
+      previous = quote;
       count++;
+      if( quote == last ) {
+        var counter = quoteCount( count );
+        counter.addClass( 'pull-right' );
+        aPanelHead.children( ).first( ).append( counter );
+      }
     });
     this.container.scrollTop(0);
   }
