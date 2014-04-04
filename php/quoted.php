@@ -12,7 +12,7 @@
 	$result = array( );
 	foreach ( $q as $quoted ) {
 		$aliases = implode( $quoted->alias( ), ', ' );
-		array_push( $result, array( "id" => $quoted->idQuoted( ), "quoted" => $quoted->name( ), "aliases" => $aliases, "active" => $quoted->display( ) ) );
+		array_push( $result, array( "id" => (int)$quoted->idQuoted( ), "quoted" => $quoted->name( ), "aliases" => $aliases, "active" => $quoted->display( ) ) );
 	}
 	echo json_encode( $result );
 ?>
