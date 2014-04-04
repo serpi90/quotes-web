@@ -129,6 +129,7 @@ class QuotedRepository {
       }
       $this->statements['removeAliases']->bind_param( 'i', $idQuoted ) or die( $this->statements['removeAliases']->error );
       $this->statements['removeAliases']->execute( ) or die( $this->statements['removeAliases']->error );
+      $quoted = $this->getQuotedWithId( $idQuoted )->clearAliases( );
   }
   
   public function editQuoted( $idQuoted, $name, $active ) {

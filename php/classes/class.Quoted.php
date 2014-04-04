@@ -34,6 +34,10 @@ class Quoted {
 	public function alias( ) {
 		return $this->alias;
 	}
+  
+  public function clearAliases( ) {
+    $this->alias = array( );
+  }
 
 	public function addQuote( $quote ) {
 		if( !isset( $this->quotes[ $quote->idQuote( ) ] ) ) {
