@@ -4,19 +4,6 @@
 	margin-bottom: 0px;
 }
 
-@media (min-width: 800px) {
-	#navbar-years-group {
-		float: left;
-		margin-right: 10px;
-		max-width: 135px;
-	}
-	#navbar-quoted-group {
-		float: left;
-		margin-right: 10px;
-		max-width: 365px;
-	}
-}
-
 .nav.nav-pills.nav-stacked.nav-condensed > li > a {
    border: 1px solid #d7d5da;
    padding-bottom: 2px;

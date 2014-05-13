@@ -22,19 +22,16 @@
         <a class="navbar-brand" href="#new-quote" data-toggle="modal">Nueva Quote</a>
     </ul>
     <form class="navbar-form form-inline">
-      <div id="navbar-years-group" class="input-group">
-        <span class="input-group-addon">Año</span>
-        <select id="navbar-years" class="input form-control" placeholder="Año"></select>
-      </div>
-    </form>
-    <form class="navbar-form form-inline">
-      <div id="navbar-quoted-group" class="input-group">
-        <span class="input-group-addon">Persona</span>
-        <select id="navbar-quoted-list" class="input form-control" placeholder="Quoted"></select>
-        <span class="input-group-addon">
-          <input type="checkbox" id="navbar-quoted-all">
-          <small>Todos</small>
-        </span>
+      <div id="navbar-quotes-group" class="input-group">
+        <span class="input-group-addon">Ver</span>
+        <select id="navbar-select" class="input form-control" placeholder="Quoted">
+            <optgroup id="opt-years" label="Años">
+            </optgroup>
+            <optgroup id="opt-mcp" label="Personas Actuales">
+            </optgroup>
+            <optgroup id="opt-exmcp" label="Ex Mercap">
+            </optgroup>
+        </select>
       </div>
     </form>
   </div>
