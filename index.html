@@ -1,81 +1,52 @@
-<!DOCTYPE html>
-<title>Quotes</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Julian Maestri">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" media="screen">
-<!--<link rel="stylesheet" href="css/bootstrap.min.css" media="screen">-->
-<link rel="stylesheet" href="css/select2.css">
-<link rel="stylesheet" href="css/quotes.css">
-<header class="navbar navbar-inverse">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-bar">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
-  <div id="navigation-bar" class="collapse navbar-collapse">
-    <ul class="nav navbar-nav">
-      <li>
-        <a class="navbar-brand" href="#new-quote" data-toggle="modal">Nueva Quote</a>
-    </ul>
-    <form class="navbar-form form-inline">
-      <div id="navbar-quotes-group" class="input-group">
-        <span class="input-group-addon">Ver</span>
-        <select id="navbar-select" class="input form-control" placeholder="Quoted">
-            <optgroup id="opt-years" label="Años">
-            </optgroup>
-            <optgroup id="opt-mcp" label="Personas Actuales">
-            </optgroup>
-            <optgroup id="opt-exmcp" label="Ex Mercap">
-            </optgroup>
-        </select>
-      </div>
-    </form>
-  </div>
-</header>
-<div id="quotes-panel" class="container">
-  <!-- Content of #quotes-panel is updated via javascript -->
-  <h1 id="title"></h1>
-  <table id="quotes-panel-table" class="table table-striped table-condensed"></table>
-</div>
-<!-- Pop up window: new-quote -->
-<div id="new-quote" class="modal fade" role="dialog" aria-labelledby="new-quote-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 id="new-quote-title" class="modal-title">Nueva Quote</h4>
-      </div>
-      <div id="new-quote-body" class="modal-body">
-        <form class="form" method="POST" action="#">
-          <textarea id="new-quote-quote" class="form-control" rows="3" placeholder="Quote - "Firma" Apellido"></textarea>
-          <div class="input-group">
-            <select id="new-quote-quoted" class="form-control" multiple></select>
-            <span class="input-group-addon">
-              <input type="checkbox" id="new-quote-quoted-all" title="Mostrar Ex-Mercap">
-            </span>
-          </div>
-        </form>
-      </div>
-      <div id="new-quote-success" class="alert alert-success" hidden>...</div>
-      <div id="new-quote-warning" class="alert alert-warning" hidden>...</div>
-      <div id="new-quote-danger" class="alert alert-danger" hidden>...</div>
-      <div class="modal-footer">
-        <button type="button" id="new-quote-cancel" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" id="new-quote-submit" class="btn btn-primary">Quotear</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script> -->
-<!-- <script src="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script> -->
-<script src="//code.jquery.com/jquery.min.js"></script>
-<!--<script src="js/jquery.min.js"></script>-->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<!--<script src="js/bootstrap.min.js"></script>-->
-<script src="js/select2.min.js"></script><!-- Using Select2 v3.4.3 -->
-<script src="js/common.js"></script>
-<script src="js/quotes.js"></script>
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Julian Maestri">
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/foundation.min.css">
+	<title>Quotes</title>
+</head>
+<body ng-app="quotes" ng-controller="QuotesController as qc">
+	<div id="myModal" class="reveal-modal" data-reveal>
+	<!--$('#myModal').foundation('reveal', 'open');-->
+	<!--$('#myModal').foundation('reveal', 'close');-->
+		<h2>Awesome. I have it.</h2>
+		<p class="lead">Your couch.  It is mine.</p>
+		<p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+	<div class"row"> <div class="small-12 medium-10 medium-centered columns">
+		<select
+			ng-model="qc.selectedItem"
+			ng-change="qc.selectedItem.getQuotes()"
+			ng-options="item.label group by item.group for item in qc.selectList | orderBy: ['order', 'label']"
+			>
+		</select>
+		<h1 class="text-center">{{qc.selectedItem.label}}</h1>
+		<h2 class="text-center subheader"><small><quote-amount value="{{qc.quotes.length}}"></quote-amount></small></h2>
+		<div
+			width="100%"
+			ng-if="qc.quotes.length"
+			ng-repeat="(label, quotes) in qc.quotes | groupBy: 'year'">
+			<table width="100%">
+			<thead ng-hide="{{label == qc.selectedItem.label}}">
+				<tr> <th colspan="2" class="text-center"> {{label}} - <quote-amount value={{quotes.length}}></quote-amount> </th> </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="quote in quotes">
+					<td width>{{quote.number}}</td>
+					<td width="100%">{{quote.quote}}</td>
+				</tr></tbody>
+			</table>
+		</div>
+	</div> </div>
+    <script src="js/vendor/jquery.js"></script>
+	<script src="js/foundation/foundation.js"></script>
+	<script src="js/foundation/foundation.reveal.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/angular-filter.js"></script>
+	<script src="index.js"></script>
+</body>
