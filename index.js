@@ -1,5 +1,7 @@
+'use strict';
+
 (function(){
-	var app = angular.module('quotes', ['angular.filter']);
+	var app = angular.module('quotes', ['angular.filter', 'ui.select']);
 	app.factory('quotesRepository', function($http, $q){
 		var self = {};
 		self.getYears = function() {
@@ -39,6 +41,15 @@
 		}
 		return self;
 	});
+	app.controller('NewQuoteController', function( quotesRepository, $sce ) {
+		var self = this;
+		self.quoted = [];
+		self.search = {active: true};
+		self.new = {};
+		self.trustAsHtml = function(value) { return $sce.trustAsHtml(value); };
+		quotesRepository.getQuoted().then(function(data){ self.quoted = data; });
+	});
+
 	app.controller('QuotesController', function(quotesRepository){
 		var self = this, selectedYear;
 		self.selectedItem = null;;
@@ -46,6 +57,9 @@
 		self.years = [];
 		self.quoted = [];
 		self.quotes = [];
+		self.openNewQuote = function() {
+			$('#myModal').foundation('reveal', 'open');
+		};
 		var loaded = { years: false, quoted: false };
 
 		// This is caled once self.years and self.quoted are filled.
@@ -61,7 +75,7 @@
 				var callback = function ( ) {
 					quotesRepository.getQuotesByQuoted( quoted ).then(function(data){ self.quotes = data; });
 				},
-				item = {label: quoted.quoted, getQuotes: callback};
+				item = {label: quoted.name, getQuotes: callback};
 				if( quoted.active ) {
 					item.group = "Actuales";
 					item.order = 2;

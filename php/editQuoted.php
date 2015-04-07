@@ -1,5 +1,5 @@
 <?php
-  //require_once('auth.php');
+  require_once('auth.php');
 	if( !isset($_REQUEST['id']) ) {
 		$result['error'] = TRUE;
 		$result['errorDescription'] = 'Id de quoteado ausente';
