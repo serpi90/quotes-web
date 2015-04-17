@@ -1,48 +1,8 @@
-/* Navigation bar */
-
-.navbar {
-	margin-bottom: 0px;
+.alert-box > .close-white {
+	opacity: 1;
+	color: white;
 }
 
-.nav.nav-pills.nav-stacked.nav-condensed > li > a {
-   border: 1px solid #d7d5da;
-   padding-bottom: 2px;
-   padding-top: 2px;
-}
-
-.nav>li>a:hover,
-.nav>li>a:focus {
-	color: black;
-}
-
-/* Body */
-h1,
-h3,
-th {
-	text-align: center;
-}
-
-#new-quote-quote {
-	resize: vertical;
-}
-
-.panel.panel-default.panel-no-border-top {
-	border-top: 0;
-}
-
-.no-border-bottom {
-	border-bottom: 0;
-}
-
-.panel-quotes {
-	padding: 0;
-}
-
-.no-margin-bot {
+.no-margin-bottom {
 	margin-bottom: 0;
-}
-
-.number {
-	width: 50px;
-  font-style: italic;
 }

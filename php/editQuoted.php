@@ -52,7 +52,7 @@
 		$result['errorDescription'] = 'Nombres duplicados: '.$e->getMessage( );
 		die(json_encode($result));
   }
-	$result['success'] = TRUE;
+	$result['error'] = FALSE;
 	echo json_encode($result);
 ?>
 

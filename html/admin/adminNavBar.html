@@ -1,0 +1,13 @@
+<div class="row collapse" >
+	<div class="small-12 medium-2 columns">
+		<span class="prefix button success" ng-click="qc.openNewQuote()"> Nueva Quote </span>
+	</div>
+	<div id="new-quoted-select" class="small-12 medium-10 columns">
+		<select
+			ng-model="qc.selectedItem"
+			ng-change="qc.selectedItem.getQuotes()"
+			ng-options="item.label group by item.group for item in qc.selectList | orderBy: ['order', 'label']"
+			>
+		</select>
+	</div>
+</div>

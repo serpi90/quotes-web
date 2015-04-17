@@ -1,0 +1,21 @@
+<div class="reveal-modal" data-reveal ng-controller="NewQuoteController as nq">
+	<h2>Nueva Quote</h2>
+
+	<a class="close-reveal-modal">&#215;</a>
+	<textarea ng-model="nq.new.quote" placeholder="Quote - "></textarea>
+	<ui-select ng-model="nq.new.quoted" theme="selectize">
+		<ui-select-match placeholder="Quoteado ...">{{$select.selected.name}}</ui-select-match>
+		<ui-select-choices repeat="quoted in nq.quoted | filter:nq.search | filter: $select.search">
+			<span ng-bind-html="nq.trustAsHtml((quoted.name | highlight: $select.search))"></span>
+			<small ng-if="quoted.aliases" ng-bind-html="nq.trustAsHtml((quoted.aliases | highlight: $select.search))"></small>
+		</ui-select-choices>
+	</ui-select>
+	<hr/>
+	<div class="alert-box round" ng-class="nq.result.class" ng-show="nq.result.show">
+		{{nq.result.message}}
+		<a href="#" ng-click="nq.hideAlert()" class="close close-white">&times;</a>
+	</div>
+	<div class="row">
+		<span class="button right no-margin-bottom" ng-click="nq.submit()"> Nueva Quote </span>
+	</div>
+</div>
