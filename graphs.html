@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<div id='byYear'></div>
+<div id='byPerson'></div>
+<meta http-equiv='Content-type' content='text/html;charset=UTF-8'/>
+<script src='//code.jquery.com/jquery.min.js'></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+$(function () { 
+  jQuery.ajax({
+    type: 'POST',
+    url: 'php/quotesPerYear.php',
+    success : function (json) {
+      var x = [], serie = jQuery.parseJSON(json);
+      serie.forEach( function( o ) {
+        x.push( o.year );
+      });
+      
+      $('#byYear').highcharts({
+          legend: { enabled: false },
+          title: { text: 'Quotes por Año' },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  color: '#000000',
+                  connectorColor: '#000000',
+                  format: '<b>{point.name}:</b> {point.y}'
+              }
+            }
+          },
+          series: [{ type: 'pie', name: 'Quotes/Year', data: serie }],
+          xAxis: { categories: x }
+      });
+    }
+  });
+  jQuery.ajax({
+    type: 'POST',
+    url: 'php/quotesPerPerson.php',
+    success : function (json) {
+      var serie = jQuery.parseJSON(json);
+      
+      $('#byPerson').highcharts({
+          legend: { enabled: false },
+          title: { text: 'Quotes por Persona (Historico)' },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  color: '#000000',
+                  connectorColor: '#000000',
+                  format: '<b>{point.name}:</b> {point.y} ({point.percentage:.1f} %)'
+              }
+            }
+          },
+          series: [{ type: 'pie', name: 'Quotes/Year', data: serie }]
+      });
+    }
+  });
+  
+});
+</script>
