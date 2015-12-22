@@ -26,7 +26,7 @@
 		die(json_encode($result));
 	}
 
-	$result['success'] = TRUE;
+	$result['error'] = FALSE;
 	echo json_encode($result);
 ?>
 

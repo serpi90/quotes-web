@@ -1,5 +1,5 @@
 <?php
-  //require_once('auth.php');
+  require_once('auth.php');
 	if( !isset($_REQUEST['id']) ) {
 		$result['error'] = TRUE;
 		$result['errorDescription'] = 'Id de quoteado ausente';
@@ -52,7 +52,7 @@
 		$result['errorDescription'] = 'Nombres duplicados: '.$e->getMessage( );
 		die(json_encode($result));
   }
-	$result['success'] = TRUE;
+	$result['error'] = FALSE;
 	echo json_encode($result);
 ?>
 

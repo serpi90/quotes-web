@@ -1,211 +1,33 @@
- <!DOCTYPE html>
-<title>Quotes Admin</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Julian Maestri">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/select2.css">
-<link rel="stylesheet" href="css/admin.css">
-<header class="navbar navbar-inverse">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-bar">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <div class="navbar-brand" href="#about" data-toggle="modal">SMQ</div>
-  </div>
-  <div id="navigation-bar" class="collapse navbar-collapse">
-    <ul id='nav-list' class="nav navbar-nav">
-      <li id='nav-edit-quotes' class="active"><a id="edit-quotes-btn" href="#edit-quotes-year" data-toggle="modal">Editar Quotes</a>
-      <li id='nav-edit-quoted'><a id="edit-quoted-btn" href="#">Editar Quoteados</a>
-      <li id='nav-add-quoted'><a id="add-quoted-btn" href="#new-quoted" data-toggle="modal">Agregar Quoteado</a>
-    </ul>
-    <ul id='nav-list' class="nav navbar-nav pull-right">
-      <li id='nav-add-quoted'><a id="logout-btn" href="#" >Cerrar Sesion</a>
-    </ul>
-  </div>
-</header>
-<div class="container">
-  <table class="table">
-    <tbody id="admin-tbody">
-  </table>
-</div>
-<!-- Edit Quote Window -->
-<div id="edit-quote" class="modal fade" role="dialog" aria-labelledby="edit-quote-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 id="edit-quote-title" class="modal-title">Editar Quote</h4>
-      </div>
-      <div id="edit-quote-body" class="modal-body">
-        <div class="form-group">
-          <div class="input-group">
-            <span id="edit-quote-number" class="input-group-addon">0000</span>
-            <input type="text" id="edit-quote-text" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Quoteado</span>
-            <select id="edit-quote-quoted" multiple></select>
-          </div>
-        </div>
-      </div>
-      <div id="edit-quote-success" class="alert alert-success" hidden>...</div>
-      <div id="edit-quote-info" class="alert alert-info" hidden>...</div>
-      <div id="edit-quote-warning" class="alert alert-warning" hidden>...</div>
-      <div id="edit-quote-danger" class="alert alert-danger" hidden>...</div>
-      <div class="modal-footer">
-        <button type="button" id="edit-quote-submit" class="btn btn-primary">Guardar</button>
-        <button type="button" id="edit-quote-cancel" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Edit Quotes Year Window -->
-<div id="edit-quotes-year" class="modal fade" role="dialog" aria-labelledby="edit-quotes-year-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 id="edit-quotes-year-title" class="modal-title">Quotes a Mostrar</h4>
-      </div>
-      <div id="edit-quotes-year-body" class="modal-body">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Año</span>
-            <select id="quotes-year" class="form-control"></select>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="edit-quotes-year-submit" type="button" class="btn btn-primary">Mostrar</button>
-        <button id="edit-quotes-year-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Edit Quoted Window -->
-<div class="modal fade" id="edit-quoted" tabindex="-1" role="dialog" aria-labelledby="edit-quoted-title" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="edit-quoted-title">Editar Quoteado</h4>
-      </div>
-      <div class="modal-body" id="edit-quoted-body">
-        <div class="form-group">
-          <input type="hidden" id="edit-quoted-id">
-          <div class="input-group">
-            <span class="input-group-addon">Nombre</span>
-            <input type="text" id="edit-quoted-name" class="form-control">
-            <span class="input-group-addon">
-              <input type="checkbox" id="edit-quoted-active">
-              Activo
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Aliases</span>
-            <input type="hidden" id="edit-quoted-alias">
-          </div>
-          <p class="help-block">Los aliases son unicos y Case-Sensitive, no puede haber 2 personas con el mismo alias.</p>
-          <p class="help-block">Separar los aliases con coma o [TAB].</p>
-        </div>
-      </div>
-      <div id="edit-quoted-success" class="alert alert-success" hidden>...</div>
-      <div id="edit-quoted-info" class="alert alert-info" hidden>...</p></div>
-      <div id="edit-quoted-warning" class="alert alert-warning" hidden>...</div>
-      <div id="edit-quoted-danger" class="alert alert-danger" hidden>...</div>
-      <div class="modal-footer">
-        <button type="button" id="edit-quoted-submit" class="btn btn-primary">Guardar</button>
-        <button type="button" id="edit-quoted-cancel" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- New Quoted Window -->
-<div id="new-quoted" class="modal fade" role="dialog" aria-labelledby="new-quoted-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 id="new-quoted-title" class="modal-title">Nuevo Quoteado</h4>
-      </div>
-      <div id="new-quoted-body" class="modal-body">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Nombre</span>
-            <input type="text" id="new-quoted-name" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Aliases</span>
-            <input type="hidden" id="new-quoted-alias">
-          </div>
-          <p class="help-block">Los aliases son unicos y Case-Sensitive, no puede haber 2 personas con el mismo alias.</p>
-          <p class="help-block">Separar los aliases con coma o [TAB].</p>
-        </div>
-      </div>
-      <div id="new-quoted-success" class="alert alert-success" hidden>...</div>
-      <div id="new-quoted-info" class="alert alert-info" hidden>...</p></div>
-      <div id="new-quoted-warning" class="alert alert-warning" hidden>...</div>
-      <div id="new-quoted-danger" class="alert alert-danger" hidden>...</div>
-      <div class="modal-footer">
-        <button type="button" id="new-quoted-submit" class="btn btn-primary">Agregar</button>
-        <button type="button" id="new-quoted-cancel" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Login Window -->
-<div id="login" class="modal fade" role="dialog" aria-labelledby="login-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 id="login-title" class="modal-title">LogIn</h4>
-      </div>
-      <div id="login-body" class="modal-body">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">Password</span>
-            <input type="password" id="login-pass" class="form-control">
-          </div>
-        </div>
-      </div>
-      <div id="login-warning" class="alert alert-warning" hidden>...</div>
-      <div id="login-danger" class="alert alert-danger" hidden>...</div>
-      <div class="modal-footer">
-        <button type="button" id="login-submit" class="btn btn-primary">Acceder</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- About Window -->
-<div id="about" class="modal fade" role="dialog" aria-labelledby="about-title" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 id="login-title" class="modal-title">Créditos</h4>
-      </div>
-      <div id="login-body" class="modal-body">
-        <div class="alert alert-sm alert-info"><span class='glyphicon glyphicon-user'></span> Julián Maestri</div>
-        <p>Agréguese a esta lista si edita algo. </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="new-quoted-cancel" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="//code.jquery.com/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="js/select2.min.js"></script><!-- Using Select2 v3.4.3 -->
-<script src="js/md5.js"></script>
-<script src="js/common.js"></script>
-<script src="js/admin.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Julian Maestri">
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/foundation.min.css">
+	<link rel="stylesheet" href="css/select.min.css">
+	<link rel="stylesheet" href="css/selectize.css">
+	<link rel="stylesheet" href="css/quotes.css">
+	<title>Quotes</title>
+</head>
+<body ng-app="quotes" ng-controller="QuotesController as qc">
+	<div class="row">
+		<nav-bar></nav-bar>
+	</div>
+	<script src="js/external/vendor/jquery.js"></script>
+	<script src="js/external/foundation/foundation.js"></script>
+	<script src="js/external/foundation/foundation.reveal.js"></script>
+	<script src="js/external/angular.js"></script>
+	<script src="js/external/select.js"></script>
+	<script src="js/external/angular-filter.js"></script>
+	<script src="js/module.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/directives.js"></script>
+	<script src="js/admin/module.js"></script>
+	<script src="js/admin/services.js"></script>
+	<script src="js/admin/controllers.js"></script>
+	<script src="js/admin/directives.js"></script>
+</body>

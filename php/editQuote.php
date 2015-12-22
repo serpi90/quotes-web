@@ -79,7 +79,7 @@
   } else {
     $qr->editQuote( $number, $quote, array( ) );
   }
-	$result['success'] = TRUE;
+	$result['error'] = FALSE;
 	echo json_encode($result);
 ?>
 
