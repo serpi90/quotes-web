@@ -1,18 +1,17 @@
 <div class="large-12">
 	<h1 class="text-center">{{qc.selectedItem.label}}</h1>
-	<h2 class="text-center subheader"><small><quote-amount value="{{qc.quotes.length}}"></quote-amount></small></h2>
 	<div
 		width="100%"
 		ng-if="qc.quotes.length"
-		ng-repeat="(label, quotes) in qc.quotes | groupBy: 'year'">
+		ng-repeat="(year, quotes) in qc.quotes | groupBy: 'year' ">
 		<table width="100%">
-		<thead ng-hide="{{label == qc.selectedItem.label}}">
-			<tr> <th colspan="2" class="text-center"> {{label}} - <quote-amount value={{quotes.length}}></quote-amount> </th> </tr>
+		<thead>
+			<tr> <th colspan="2" class="text-center"> {{year}} - <quote-amount value={{quotes.length}}></quote-amount> </th> </tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="quote in quotes">
-				<td width>{{quote.number}}</td>
-				<td width="100%">{{quote.quote}}</td>
+				<td>{{quote.number}}</td>
+				<td width="100%" ng-bind-html="quote.quote"></td>
 			</tr></tbody>
 		</table>
 	</div>

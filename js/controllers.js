@@ -62,14 +62,18 @@
 				
 				angular.forEach(self.years, function(year) {
 					var callback = function () {
-						quotesRepository.getQuotesByYear(year).then(function(data) { self.quotes = data; });
+						quotesRepository.getQuotesByYear(year).then( function(data) {
+							self.quotes = data;
+						});
 					},
 					item = {label: year, getQuotes: callback, group: "Año", order: 1};
 					self.selectList.push(item);
 				});
 				angular.forEach(self.quoted, function(quoted) {
 					var callback = function () {
-						quotesRepository.getQuotesByQuoted(quoted).then(function(data) { self.quotes = data; });
+						quotesRepository.getQuotesByQuoted(quoted).then( function(data) {
+							self.quotes = data;
+						});
 					},
 					item = {label: quoted.name, getQuotes: callback};
 					if(quoted.active) {
