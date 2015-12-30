@@ -20,7 +20,6 @@
 							delete q.active;
 							return q;
 						});
-						console.log(quoted);
 						deferred.resolve(quoted);
 					})
 					.error(function(error){ deferred.reject(error); })

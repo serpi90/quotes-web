@@ -3,10 +3,16 @@
 (function() {
 	angular.module('quotes')
 		.controller('NewQuoteController', function(quotesRepository, $sce, $scope) {
-			var self = this;
+			var self = this,
+			emptyQuote = function(){
+				return {
+					quote: '',
+					quoted: []
+				};
+			};
 			self.quoted = [];
 			self.search = {};
-			self.new = {};
+			self.new = emptyQuote();
 			self.result = {
 				show: false,
 				message: "message",
@@ -24,6 +30,7 @@
 							self.result.message = "Quote subida exitosamente, pero no se pudo enviar el mail.";
 							self.result.class = "warning";
 						}
+						self.new = emptyQuote();
 						$scope.$emit('newQuote');
 					}, function(errorResult) {
 						self.result.show = true;
@@ -47,11 +54,12 @@
 			self.quoted = [];
 			self.quotes = [];
 			self.openNewQuote = function() {
-				$('#myModal').foundation('reveal', 'open');
+				$('#new-quote-modal').foundation('reveal', 'open');
 			};
 
 			// This is caled once self.years and self.quoted are filled.
 			self.getSelectList = function() {
+				
 				angular.forEach(self.years, function(year) {
 					var callback = function () {
 						quotesRepository.getQuotesByYear(year).then(function(data) { self.quotes = data; });
