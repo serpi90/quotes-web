@@ -7,7 +7,7 @@
 	} else if ( !isset($_REQUEST['quoted']) or empty($_REQUEST['quoted']) ) {
 		$result['error'] = TRUE;
 		$result['errorDescription'] = 'Debe elegirse al menos un quoteado';
-    $result['errorDetail'] = 'Parametro: `quoted` (QuotedId) ausente';
+	$result['errorDetail'] = 'Parametro: `quoted` (QuotedId) ausente';
 		die(json_encode($result));
 	}
 	$quote = utf8_decode( $_REQUEST['quote'] );
@@ -54,8 +54,16 @@
 	$qr->addQuote( $quote, $quoted );
 	$result['error'] = FALSE;
 
-	$quote = 'Nueva quote: <br/>&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$quote.'</i>';
-	$result['mail'] = sendMail( $quote,  $newQuoteSubject );
+	$message = 'Nueva quote: <br/>&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$quote.'</i>';
+	$result['mail'] = sendMail( $message,  $newQuoteSubject );
+
 	echo json_encode($result);
+
+	$bot = new TelegramBot( $telegram['token'] );
+	$authors = implode(", ", array_map(function ($author) { return $author->name(); }, $quoted));
+	$message = 'Quote Fresca: ' . utf8_encode($quote) . "\n- _{$authors}_";
+	foreach( $telegram['chat_ids'] as $chatId ) {
+		$bot->sendMessage( $chatId, $message, true); 
+	}
 ?>
 
