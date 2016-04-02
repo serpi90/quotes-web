@@ -56,6 +56,21 @@
 			self.openNewQuote = function() {
 				$('#new-quote-modal').foundation('reveal', 'open');
 			};
+			self.groupByYear = function( quotes ) {
+				var compare = function ( q1, q2 ) {
+						return q1.number < q2.number ? -1 : q1.number > q2.number ? 1 : 0;
+					},
+					years = Array.from(new Set(quotes.map(function(quote){ return quote.year; }))).sort().reverse(),
+					result = years.map( function(year) {
+						return {
+							year: year,
+							quotes: quotes.filter( function (quote) {
+								return quote.year == year;
+							}).sort(compare)
+						};
+					});
+				return result;
+			}
 
 			// This is caled once self.years and self.quoted are filled.
 			self.getSelectList = function() {
@@ -63,7 +78,7 @@
 				angular.forEach(self.years, function(year) {
 					var callback = function () {
 						quotesRepository.getQuotesByYear(year).then( function(data) {
-							self.quotes = data;
+							self.quotes = self.groupByYear(data);
 						});
 					},
 					item = {label: year, getQuotes: callback, group: "Año", order: 1};
@@ -72,7 +87,7 @@
 				angular.forEach(self.quoted, function(quoted) {
 					var callback = function () {
 						quotesRepository.getQuotesByQuoted(quoted).then( function(data) {
-							self.quotes = data;
+							self.quotes = self.groupByYear(data);
 						});
 					},
 					item = {label: quoted.name, getQuotes: callback};
@@ -92,7 +107,7 @@
 			quotesRepository.getYears().then(function(data) {
 				self.years = data;
 				self.selectedYear = data[0];
-				quotesRepository.getQuotesByYear(self.selectedYear).then(function(data) { self.quotes = data; });
+				quotesRepository.getQuotesByYear(self.selectedYear).then(function(data) { self.quotes = self.groupByYear(data); });
 				loaded.years = true;
 				// As i don't know which one is going to finish first, this or getQuoted(), the last one fills the list.
 				if(loaded.quoted) { self.getSelectList(); }

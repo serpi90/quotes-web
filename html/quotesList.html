@@ -3,13 +3,13 @@
 	<div
 		width="100%"
 		ng-if="qc.quotes.length"
-		ng-repeat="(year, quotes) in qc.quotes | groupBy: 'year' ">
+		ng-repeat="yearQuotes in qc.quotes">
 		<table width="100%">
 		<thead>
-			<tr> <th colspan="2" class="text-center"> {{year}} - <quote-amount value={{quotes.length}}></quote-amount> </th> </tr>
+			<tr> <th colspan="2" class="text-center"> {{yearQuotes.year}} - <quote-amount value={{yearQuotes.quotes.length}}></quote-amount> </th> </tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="quote in quotes">
+			<tr ng-repeat="quote in yearQuotes.quotes">
 				<td>{{quote.number}}</td>
 				<td width="100%" ng-bind-html="quote.quote"></td>
 			</tr></tbody>
