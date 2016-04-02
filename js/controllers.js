@@ -120,6 +120,10 @@
 				if(loaded.years) { self.getSelectList(); }
 			});
 			$scope.$on('newQuote', function(event, quote) {
+				var lastYear = Math.max.apply(null, self.years);
+				self.selectedItem = self.selectList.filter( function(item) {
+					return item.label == lastYear;
+				})[0];
 				self.selectedItem.getQuotes();
 			});
 		});
