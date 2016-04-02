@@ -1,18 +1,25 @@
 <div class="large-12">
-	<h1 class="text-center">{{qc.selectedItem.label}}</h1>
-	<div
+	<h1 class="text-center"> {{qc.selectedItem.label}} </h1>
+	<h4 class="text-center subheader"><quote-amount value={{qc.quotes.length}}></quote-amount></h4>
+	<dl
 		width="100%"
 		ng-if="qc.quotes.length"
-		ng-repeat="yearQuotes in qc.quotes">
-		<table width="100%">
-		<thead>
-			<tr> <th colspan="2" class="text-center"> {{yearQuotes.year}} - <quote-amount value={{yearQuotes.quotes.length}}></quote-amount> </th> </tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="quote in yearQuotes.quotes">
-				<td>{{quote.number}}</td>
-				<td width="100%" ng-bind-html="quote.quote"></td>
-			</tr></tbody>
-		</table>
-	</div>
+		ng-repeat="yearQuotes in qc.quotesByYear"
+		class="accordion" data-accordion>
+		<dd class="accordion-navigation">
+			<a href="#y{{yearQuotes.year}}" class="text-center" ng-if="qc.quotesByYear.length > 1">
+				<h5>{{yearQuotes.year}} - <quote-amount value={{yearQuotes.quotes.length}}></quote-amount></h5>
+			</a>
+			
+			<table width="100%" id="y{{yearQuotes.year}}" class="year-quotes content active">
+				<tbody>
+					<tr ng-repeat="quote in yearQuotes.quotes">
+						<td>{{quote.number}}</td>
+						<td width="100%" ng-bind-html="quote.quote"></td>
+					</tr>
+				</tbody>
+			</table>
+		</dd>
+	</dl>
+	<script>$(document).foundation();</script>
 </div>

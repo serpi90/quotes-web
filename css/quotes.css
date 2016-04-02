@@ -1,3 +1,11 @@
+.accordion .accordion-navigation > a, .accordion dd > a.year {
+    padding: 0.5rem;
+}
+
+.accordion .accordion-navigation>.content, .accordion dd>.content.year-quotes{
+	padding: 0;
+}
+
 .alert-box > .close-white {
 	opacity: 1;
 	color: white;

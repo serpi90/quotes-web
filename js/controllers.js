@@ -53,6 +53,7 @@
 			self.years = [];
 			self.quoted = [];
 			self.quotes = [];
+			self.quotesByYear = [];
 			self.openNewQuote = function() {
 				$('#new-quote-modal').foundation('reveal', 'open');
 			};
@@ -78,7 +79,8 @@
 				angular.forEach(self.years, function(year) {
 					var callback = function () {
 						quotesRepository.getQuotesByYear(year).then( function(data) {
-							self.quotes = self.groupByYear(data);
+							self.quotes = data;
+							self.quotesByYear = self.groupByYear(data);
 						});
 					},
 					item = {label: year, getQuotes: callback, group: "Año", order: 1};
@@ -87,7 +89,8 @@
 				angular.forEach(self.quoted, function(quoted) {
 					var callback = function () {
 						quotesRepository.getQuotesByQuoted(quoted).then( function(data) {
-							self.quotes = self.groupByYear(data);
+							self.quotes = data;
+							self.quotesByYear = self.groupByYear(data);
 						});
 					},
 					item = {label: quoted.name, getQuotes: callback};
@@ -107,7 +110,10 @@
 			quotesRepository.getYears().then(function(data) {
 				self.years = data;
 				self.selectedYear = data[0];
-				quotesRepository.getQuotesByYear(self.selectedYear).then(function(data) { self.quotes = self.groupByYear(data); });
+				quotesRepository.getQuotesByYear(self.selectedYear).then(function(data) {
+					self.quotes = data;
+					self.quotesByYear = self.groupByYear(data);
+				});
 				loaded.years = true;
 				// As i don't know which one is going to finish first, this or getQuoted(), the last one fills the list.
 				if(loaded.quoted) { self.getSelectList(); }
