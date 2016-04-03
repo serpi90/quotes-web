@@ -2,12 +2,6 @@
 
 (function(){
 	angular.module('quotes')
-		.directive('navBar', function () {
-			return {
-				restrict: 'E',
-				templateUrl: 'html/navBar.html'
-			};
-		})
 		.directive('quotesList', function () {
 			return {
 				restrict: 'E',

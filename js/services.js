@@ -61,8 +61,6 @@
 						quote: newQuote.quote
 					}})
 					.success(function(result){
-						// result format: { error:true, errorDescription:string, errorDetail:string }
-						// result format: { error:false, mail:bool }
 						if(result.error){
 							deferred.reject(result);
 						} else {
