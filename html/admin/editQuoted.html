@@ -1,1 +1,28 @@
-Edit Quoted
+<div class="large-12" ng-controller="EditQuotedController as eqd">
+	<table width="100%">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Aliases</th>
+				<th>Activo</th>
+				<th>Editar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="quoted in eqd.quoted">
+				<td>{{quoted.name}}</td>
+				<td>{{quoted.aliases}}</td>
+				<td>
+					<i class="fa"
+					ng-class="{true:'fa-check',false:'fa-close'}[quoted.active]"></i>
+				</td>
+				<td>
+					<a href="#" ng-click="eqd.openModal(quoted)">
+						<i class="fa fa-pencil-square-o"></i>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<edit-quoted-modal></edit-quoted-modal>
+</div>

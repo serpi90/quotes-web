@@ -1,0 +1,18 @@
+<div id="edit-quoted-modal"
+	class="reveal-modal"
+	data-reveal>
+	<h2>Editar Quoteado</h2>
+	<a class="close-reveal-modal">&#215;</a>
+	<label for="quoted-name"> </label>
+	<input id="quoted-name" type="text" ng-model="eqd.current.name"/>
+	<label for="quoted-aliases"> </label>
+	<input id="quoted-aliases" type="text" ng-model="eqd.current.aliases"/>
+	<div class="switch">
+		<input id="quoted-is-active" ng-model="eqd.current.active" type="checkbox">
+		<label for="quoted-is-active"></label>
+	</div>
+	<div class="row">
+		<span class="button right no-margin-bottom"
+			ng-click="eqd.submit()"> Aceptar </span>
+	</div>
+</div>

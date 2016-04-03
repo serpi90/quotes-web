@@ -14,6 +14,12 @@
 				templateUrl: 'html/admin/editQuoted.html'
 			};
 		})
+		.directive('editQuotedModal', function () {
+			return {
+				restrict: 'E',
+				templateUrl: 'html/admin/editQuotedModal.html'
+			};
+		})
 		.directive('changeYear', function () {
 			return {
 				restrict: 'E',

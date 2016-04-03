@@ -11,30 +11,33 @@
 	<link rel="stylesheet" href="css/select.min.css">
 	<link rel="stylesheet" href="css/selectize.css">
 	<link rel="stylesheet" href="css/quotes.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<title>SMQ</title>
 </head>
 <body ng-app="quotes">
 	<div class="row" ng-controller="NavBarController as nv">
-		<nav class="top-bar" data-topbar role="navigation">
-			<ul class="title-area">
-				<li class="name"> <h1><a href="#">SMQ</a></h1> </li>
-				<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-			</ul>
-			<section class="top-bar-section">
-				<ul class="left">
-					<li ng-class="{active: nv.edit=='quote'}">
-						<a href="#" ng-click="nv.edit='quote'">Editar Quotes</a>
-					</li>
-					<li ng-class="{active: nv.edit=='quoted'}">
-						<a href="#" ng-click="nv.edit='quoted'">Editar Quoteados</a>
-					</li>
-					<li ng-class="{active: nv.edit=='year'}">
-						<a href="#" ng-click="nv.edit='year'">Cambiar Año</a>
-					</li>
+		<div class="sticky">
+			<nav class="top-bar" data-topbar role="navigation">
+				<ul class="title-area">
+					<li class="name"> <h1><a href="#">SMQ</a></h1> </li>
+					<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
 				</ul>
-				<ul class="right"> <li><a href="#">Desloguearse</a></li> </ul>
-			</section>
-		</nav>
+				<section class="top-bar-section">
+					<ul class="left">
+						<li ng-class="{active: nv.edit=='quote'}">
+							<a href="#" ng-click="nv.edit='quote'">Editar Quotes</a>
+						</li>
+						<li ng-class="{active: nv.edit=='quoted'}">
+							<a href="#" ng-click="nv.edit='quoted'">Editar Quoteados</a>
+						</li>
+						<li ng-class="{active: nv.edit=='year'}">
+							<a href="#" ng-click="nv.edit='year'">Cambiar Año</a>
+						</li>
+					</ul>
+					<ul class="right"> <li><a href="#">Desloguearse</a></li> </ul>
+				</section>
+			</nav>
+		</div>
 		<div ng-if="nv.edit=='quote'"><edit-quotes></edit-quotes></div>
 		<div ng-if="nv.edit=='quoted'"><edit-quoted></edit-quoted></div>
 		<div ng-if="nv.edit=='year'"><change-year></change-year></div>
@@ -42,6 +45,7 @@
 	<script src="js/external/vendor/jquery.js"></script>
 	<script src="js/external/foundation/foundation.js"></script>
 	<script src="js/external/foundation/foundation.reveal.js"></script>
+	<script src="js/external/foundation/foundation.topbar.js"></script>
 	<script src="js/external/angular.js"></script>
 	<script src="js/external/select.js"></script>
 	<script src="js/external/angular-filter.js"></script>
@@ -50,4 +54,5 @@
 	<script src="js/services.js"></script>
 	<script src="js/admin/controllers.js"></script>
 	<script src="js/admin/directives.js"></script>
+	<script>$(document).foundation()</script>
 </body>
