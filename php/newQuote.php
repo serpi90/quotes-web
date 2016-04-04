@@ -54,16 +54,22 @@
 	$qr->addQuote( $quote, $quoted );
 	$result['error'] = FALSE;
 
-	$message = 'Nueva quote: <br/>&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$quote.'</i>';
-	$result['mail'] = sendMail( $message,  $newQuoteSubject );
+	if( $config['mail']['enabled'] ) {
+		$message = 'Nueva quote: <br/>&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$quote.'</i>';
+		$result['mail'] = sendMail( $message,  $config['mail']['subject']['newQuote'] );
+	} else {
+		$result['mail'] = false;
+	}
 
 	echo json_encode($result);
 
-	$bot = new TelegramBot( $telegram['token'] );
-	$authors = implode(", ", array_map(function ($author) { return $author->name(); }, $quoted));
-	$message = 'Quote Fresca: ' . utf8_encode($quote) . "\n- _{$authors}_";
-	foreach( $telegram['chat_ids'] as $chatId ) {
-		$bot->sendMessage( $chatId, $message, true); 
+	if( $config['telegram']['enabled'] ) {
+		$bot = new TelegramBot( $config['telegram']['token'] );
+		$authors = implode(", ", array_map(function ($author) { return $author->name(); }, $quoted));
+		$message = 'Quote Fresca: ' . utf8_encode($quote) . "\n- _{$authors}_";
+		foreach( $config['telegram']['chatIds'] as $chatId ) {
+			$bot->sendMessage( $chatId, $message, true); 
+		}
 	}
 ?>
 
