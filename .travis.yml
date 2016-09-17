@@ -1,0 +1,12 @@
+language: php
+php:
+ - '5.5'
+ - '5.4'
+env:
+ - DB=mysql
+services:
+ - mysql
+before_install:
+ - mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS `quotes-test`;'
+ - mysql -uroot -e 'CREATE USER `quotes-test`;'
+ - mysql -uroot -e 'GRANT ALL ON `quotes-test`.* TO "quotes-test"@"localhost" IDENTIFIED BY "quotes-test";'

@@ -55,7 +55,9 @@ class QuoteRepository {
 		}
 		$registrationTimeString = $registrationTime->format( 'Y-m-d H:i:s' );
 		$number = $this->nextQuoteNumber( );
-		$this->statements['insert']->bind_param( 'issi', $number, $registrationTimeString, $quoteDraft->phrase( ), $quoteDraft->author( )->id( )  );
+		$phrase = $quoteDraft->phrase( );
+		$authorId = $quoteDraft->author( )->id( );
+		$this->statements['insert']->bind_param( 'issi', $number, $registrationTimeString, $phrase, $authorId);
 		$this->statements['insert']->execute( );
 		return $this->statements['insert']->insert_id;
 	}
@@ -74,7 +76,9 @@ class QuoteRepository {
 		if( !isset( $this->statements['updateQuote'] ) ) {
 			$this->statements['updateQuote'] = $this->db_connection->prepare( 'UPDATE `Quote` SET `phrase` = ? ,`idPerson` = ? WHERE `idQuote` = ?' );
 		}
-		$this->statements['updateQuote']->bind_param( 'sii', $phrase, $author->id( ), $quote->id( ) );
+		$id = $quote->id( );
+		$authorId = $author->id( );
+		$this->statements['updateQuote']->bind_param( 'sii', $phrase, $authorId, $id );
 		$this->statements['updateQuote']->execute( );
 		return $this->quoteWithId( $quote->id( ) );
 	}
