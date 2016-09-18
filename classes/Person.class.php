@@ -1,26 +1,18 @@
 <?php
 class Person {
-	private $id;
-	private $name;
 	private $active;
 	private $aliases;
-	
+	private $id;
+	private $name;
+
 	public function __construct( $id, $name, $aliases, $active ) {
-		$this->id = $this->validateType( 'integer', $id, 'id' );
-		$this->name = $this->validateType( 'string', $name, 'name' );
+		$this->active = $this->validateType( 'boolean', $active, 'active' );
 		$this->aliases = $this->validateType( 'array', $aliases, 'aliases' );
 		foreach( $aliases as $alias ) {
 			$this->validateType( 'string', $alias, 'alias' );
 		}
-		$this->active = $this->validateType( 'boolean', $active, 'active' );
-	}
-
-	public function id( ) {
-		return $this->id;
-	}
-
-	public function name( ) {
-		return $this->name;
+		$this->id = $this->validateType( 'integer', $id, 'id' );
+		$this->name = $this->validateType( 'string', $name, 'name' );
 	}
 
 	public function active( ) {
@@ -29,6 +21,14 @@ class Person {
 
 	public function aliases( ) {
 		return $this->aliases;
+	}
+
+	public function id( ) {
+		return $this->id;
+	}
+
+	public function name( ) {
+		return $this->name;
 	}
 
 	private function validateType( $type, $value, $name ) {

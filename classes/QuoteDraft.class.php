@@ -1,24 +1,39 @@
 <?php
 class QuoteDraft {
-	private $phrase;
 	private $author;
-	
-	public function __construct( $phrase, $author ) {
+	private $id;
+	private $phrase;
+	private $registrationTime;
+
+	public function __construct( $phrase, $author, $registrationTime = NULL, $id = 0 ) {
+		$this->author = $this->validateType( 'Person', $author, 'author' );
+		$this->id = $this->validateType( 'integer', $id, 'id' );
 		$this->phrase = $this->validateType( 'string', $phrase, 'phrase' );
 		if( $this->phrase === '' ) {
 			throw new InvalidArgumentException( 'phrase can not be empty.' );
 		}
-		$this->author = $this->validateType( 'Person', $author, 'author' );
+		if( $registrationTime === NULL ) {
+			$registrationTime = new DateTime( );
+		}
+		$this->registrationTime = $this->validateType( 'DateTime', $registrationTime, 'registrationTime' );
+	}
+
+	public function author( ) {
+		return $this->author;
+	}
+
+	public function id( ) {
+		return $this->id;
 	}
 
 	public function phrase( ) {
 		return $this->phrase;
 	}
 
-	public function author( ) {
-		return $this->author;
+	public function registrationTime( ) {
+		return $this->registrationTime;
 	}
-	
+
 	private function validateType( $type, $value, $name ) {
 		$actualType = gettype( $value );
 		if( $actualType == 'object' ) {

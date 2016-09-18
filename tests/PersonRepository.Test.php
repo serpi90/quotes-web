@@ -91,7 +91,7 @@ class PersonRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( array( 'The Father of Physics', 'Dr. Physics'  ), $newton->aliases( ) );
 		$this->assertSame( FALSE, $newton->active( ) );
 	}
-	
+
 	public function testDeletePerson( ) {
 		$repository = $this->testValidCreation( );
 		$this->assertSame( array( ), $repository->peopleFilteredBy( array( ) ) );

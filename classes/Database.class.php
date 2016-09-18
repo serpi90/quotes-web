@@ -1,6 +1,5 @@
 <?php
 class Database {
-
 	private $connection;
 	private $cachedStatements;
 	private $inTransaction;
@@ -17,8 +16,8 @@ class Database {
 		$this->isConnected = true;
 	}
 
-	public function inTransaction( ) {
-		return $this->inTransaction;
+	public function __destruct( ) {
+		$this->close( );
 	}
 
 	public function beginTransaction( ) {
@@ -27,22 +26,6 @@ class Database {
 		}
 		$this->inTransaction = true;
 		$this->nonEscapedQuery('START TRANSACTION');
-	}
-
-	public function commitTransaction( ) {
-		if( !$this->inTransaction( ) ) {
-			throw new LogicException( 'Not in a transaction' );
-		}
-		$this->nonEscapedQuery('COMMIT');
-		$this->inTransaction = false;
-	}
-
-	public function rollbackTransaction( ) {
-		if( !$this->inTransaction( ) ) {
-			throw new LogicException( 'Not in a transaction' );
-		}
-		$this->nonEscapedQuery('ROLLBACK');
-		$this->inTransaction = false;
 	}
 
 	public function boundQuery( $base, $conditions, $tail = '', $limit = 0, $offset = 0 ) {
@@ -94,18 +77,6 @@ class Database {
 		return $statement->get_result( );
 	}
 
-	public function nonEscapedQuery( $query ) {
-		return $this->connection->query( $query );
-	}
-
-	public function prepare( $query ) {
-		return $this->connection->prepare( $query );
-	}
-
-	public function __destruct( ) {
-		$this->close( );
-	}
-
 	public function close( ) {
 		if( $this->isConnected ) {
 			if( $this->inTransaction( ) ) {
@@ -115,4 +86,33 @@ class Database {
 			$this->isConnected = FALSE;
 		}
 	}
+
+	public function commitTransaction( ) {
+		if( !$this->inTransaction( ) ) {
+			throw new LogicException( 'Not in a transaction' );
+		}
+		$this->nonEscapedQuery('COMMIT');
+		$this->inTransaction = false;
+	}
+
+	public function inTransaction( ) {
+		return $this->inTransaction;
+	}
+
+	public function nonEscapedQuery( $query ) {
+		return $this->connection->query( $query );
+	}
+
+	public function prepare( $query ) {
+		return $this->connection->prepare( $query );
+	}
+
+	public function rollbackTransaction( ) {
+		if( !$this->inTransaction( ) ) {
+			throw new LogicException( 'Not in a transaction' );
+		}
+		$this->nonEscapedQuery('ROLLBACK');
+		$this->inTransaction = false;
+	}
 }
+?>

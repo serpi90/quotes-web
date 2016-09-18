@@ -1,10 +1,9 @@
 <?php
 class InclusionQueryCondition extends QueryCondition {
-
 	private $left;
 	private $arguments;
 	private $bindings;
-	
+
 	public function __construct( $left, $arguments ) {
 		$this->left = $left;
 		if( ! is_array( $arguments ) ) {
@@ -17,18 +16,18 @@ class InclusionQueryCondition extends QueryCondition {
 		}
 	}
 
-	public function bindings(  ) {
-		return $this->bindings;
-	}
-
 	public function arguments( ) {
 		return $this->arguments;
+	}
+
+	public function bindings(  ) {
+		return $this->bindings;
 	}
 
 	public function condition( ) {
 		return $this->left . ' IN ( ' . implode( array_fill( 0, count( $this->arguments ), '?' ), ' , ') . ' )' ;
 	}
-	
+
 	public function evaluate( $object ) {
 		return count( array_intersect( array( call_user_func( array( $object, $this->left ) ) ), $this->arguments ) ) > 0;
 	}

@@ -1,6 +1,6 @@
 <?php
+class StillReferencedException extends Exception { }
 class PersonRepository {
-
 	private $db_connection;
 	private $people;
 	private $statements;
@@ -16,30 +16,6 @@ class PersonRepository {
 		foreach( $this->statements as $s ) {
 			$s->close( );
 		}
-	}
-
-	public function personWithId( $id ) {
-		if( !isset( $this->people[ $id ] ) ) {
-			throw new OutOfBoundException( "Person with $id not found" );
-		}
-		return $this->people[ $id ];
-	}
-
-	public function peopleFilteredBy( $conditions ) {
-		$filtered = array( );
-		foreach( $this->people as $q ) {
-			$valid = TRUE;
-			foreach( $conditions as $condition ) {
-				$valid = ( $valid and $condition->evaluate( $q ) );
-				if( !$valid ){
-					break;
-				}
-			}
-			if ( $valid ) {
-				array_push( $filtered, $q );
-			}
-		}
-		return $filtered;
 	}
 
 	public function create( $name, $aliases, $active ) {
@@ -63,6 +39,48 @@ class PersonRepository {
 		return $person;
 	}
 
+	public function delete( $person ) {
+		$this->db_connection->beginTransaction( );
+		try {
+			if( $this->hasQuotes( $person->id( ) ) ) {
+				throw new StillReferencedException;
+			}
+			$this->deletePersonAliases( $person->id( ) );
+			$this->deletePerson( $person->id( ) );
+			$this->db_connection->commitTransaction( );
+		} catch ( Exception $e ) {
+			if( $this->db_connection->inTransaction( ) ) {
+				$this->db_connection->rollbackTransaction( );
+			}
+			throw $e;
+		}
+		unset( $this->people[ $person->id( ) ] );
+	}
+
+	public function peopleFilteredBy( $conditions ) {
+		$filtered = array( );
+		foreach( $this->people as $q ) {
+			$valid = TRUE;
+			foreach( $conditions as $condition ) {
+				$valid = ( $valid and $condition->evaluate( $q ) );
+				if( !$valid ){
+					break;
+				}
+			}
+			if ( $valid ) {
+				array_push( $filtered, $q );
+			}
+		}
+		return $filtered;
+	}
+
+	public function personWithId( $id ) {
+		if( !isset( $this->people[ $id ] ) ) {
+			throw new OutOfBoundException( "Person with $id not found" );
+		}
+		return $this->people[ $id ];
+	}
+
 	public function update( $person, $name, $aliases, $active ) {
 		$name = $this->validateName( $name );
 		foreach( array_keys( $aliases ) as $key ){
@@ -83,23 +101,17 @@ class PersonRepository {
 		return $this->people[ $person->id( ) ];
 	}
 
-	public function delete( $person ) {
+	private function deletePerson( $id ) {
+		$conditions[] = new BinaryQueryCondition( 'idPerson', '=', $id );
+		$this->db_connection->boundQuery( 'DELETE FROM Person', $conditions );
+	}
 
-		$this->db_connection->beginTransaction( );
-		try {
-			if( $this->hasQuotes( $person->id( ) ) ) {
-				throw new StillReferencedException;
-			}
-			$this->deletePersonAliases( $person->id( ) );
-			$this->deletePerson( $person->id( ) );
-			$this->db_connection->commitTransaction( );
-		} catch ( Exception $e ) {
-			if( $this->db_connection->inTransaction( ) ) {
-				$this->db_connection->rollbackTransaction( );
-			}
-			throw $e;
+	private function deletePersonAliases( $id, $aliases = array( ) ) {
+		$conditions[] = new BinaryQueryCondition( 'idPerson', '=', $id );
+		if( !empty( $aliases ) ) {
+			$conditions[] = new InclusionQueryCondition( 'alias' , $aliases );
 		}
-		unset( $this->people[ $person->id( ) ] );
+		$this->db_connection->boundQuery( 'DELETE FROM PersonAlias', $conditions );
 	}
 
 	private function fetchAllpeople( ) {
@@ -117,6 +129,13 @@ class PersonRepository {
 			$this->people[ $person->id( ) ] = $person;
 		}
 		$result->free( );
+	}
+
+	private function hasQuotes( $id ) {
+		$result = $this->db_connection->nonEscapedQuery( "(SELECT 'Quote', COUNT(*) FROM Quote WHERE idPerson = $id) UNION (SELECT 'QuoteDraft',COUNT(*) FROM QuoteDraft WHERE idPerson = $id)" );
+		$rows = $result->fetch_all( );
+		$result->free( );
+		return ( $rows[0][1] + $rows[1][1] > 0 );
 	}
 
 	private function insertPerson( $name, $active ) {
@@ -139,14 +158,6 @@ class PersonRepository {
 		}
 	}
 
-	private function validateName( $name ) {
-		$name = trim( $name );
-		if( $name === '' ) {
-			throw new InvalidArgumentException( 'Name nor alias can\'t be an empty string' );
-		}
-		return $name;
-	}
-
 	private function updatePerson( $person, $name, $active ) {
 		if( !isset( $this->statements['updatePerson'] ) ) {
 			$this->statements['updatePerson'] = $this->db_connection->prepare( "UPDATE Person SET name = ?, active = ? WHERE idPerson = ?" );
@@ -162,23 +173,12 @@ class PersonRepository {
 		$this->deletePersonAliases( $person->id( ), $aliasesToRemove );
 	}
 
-	private function deletePersonAliases( $id, $aliases = array( ) ) {
-		$conditions[] = new BinaryQueryCondition( 'idPerson', '=', $id );
-		if( !empty( $aliases ) ) {
-			$conditions[] = new InclusionQueryCondition( 'alias' , $aliases );
+	private function validateName( $name ) {
+		$name = trim( $name );
+		if( $name === '' ) {
+			throw new InvalidArgumentException( 'Name nor alias can\'t be an empty string' );
 		}
-		$this->db_connection->boundQuery( 'DELETE FROM PersonAlias', $conditions );
-	}
-
-	private function deletePerson( $id ) {
-		$conditions[] = new BinaryQueryCondition( 'idPerson', '=', $id );
-		$this->db_connection->boundQuery( 'DELETE FROM Person', $conditions );
-	}
-
-	private function hasQuotes( $id ) {
-		$result = $this->db_connection->nonEscapedQuery( "(SELECT 'Quote', COUNT(*) FROM Quote WHERE idPerson = $id) UNION (SELECT 'QuoteDraft',COUNT(*) FROM QuoteDraft WHERE idPerson = $id)" );
-		$rows = $result->fetch_all( );
-		$result->free( );
-		return ( $rows[0][1] + $rows[1][1] > 0 );
+		return $name;
 	}
 }
+?>

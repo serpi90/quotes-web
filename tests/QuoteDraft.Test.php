@@ -11,16 +11,34 @@ class QuoteDraftTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidCreation( ) {
-		$draft =  new QuoteDraft( 'test', $this->bob );
+		$now = new DateTime( );
+		$draft = new QuoteDraft( 'test', $this->bob, $now, 1 );
 		$this->assertSame( 'test', $draft->phrase( ) );
 		$this->assertSame( $this->bob, $draft->author( ) );
 	}
+
+	/**
+	 * @expectedException        InvalidArgumentException
+	 * @expectedExceptionMessage id: '' should be of type integer but is string.
+	 */
+	public function testBadId( ) {
+		new QuoteDraft( 'test', $this->bob, new DateTime( ), '' );
+	}
+
+	/**
+	 * @expectedException        InvalidArgumentException
+	 * @expectedExceptionMessage registrationTime: true should be of type DateTime but is boolean.
+	 */
+	public function testBadRegistrationTime( ) {
+		new QuoteDraft( 'test', $this->bob, TRUE );
+	}
+
 	/**
 	 * @expectedException        InvalidArgumentException
 	 * @expectedExceptionMessage phrase: true should be of type string but is boolean.
 	 */
 	public function testBadPhrase( ) {
-		new QuoteDraft( true, $this->bob );
+		new QuoteDraft( TRUE, $this->bob );
 	}
 
 	/**

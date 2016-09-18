@@ -36,9 +36,11 @@ CREATE TABLE `Quote` (
 ALTER TABLE `Quote` ADD CONSTRAINT `R_Quote_Person` FOREIGN KEY (`idPerson`) REFERENCES `Person` (`idPerson`);
 
 CREATE TABLE `QuoteDraft` (
+	`idQuoteDraft` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 	`phrase` text COLLATE utf8_bin NOT NULL,
 	`idPerson` bigint(20) unsigned NOT NULL,
 	`registered` datetime NOT NULL,
+	PRIMARY KEY (`idQuoteDraft`),
 	KEY `idPerson` (`idPerson`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

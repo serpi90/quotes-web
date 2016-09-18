@@ -1,39 +1,39 @@
 <?php
 class Quote {
+	private $author;
 	private $id;
 	private $number;
-	private $date;
 	private $phrase;
-	private $author;
-	
-	public function __construct( $id, $number, $date, $phrase, $author ) {
+	private $registrationTime;
+
+	public function __construct( $id, $number, $registrationTime, $phrase, $author ) {
+		$this->author = $this->validateType( 'Person', $author, 'author' );
 		$this->id = $this->validateType( 'integer', $id, 'id' );
 		$this->number = $this->validateType( 'integer', $number, 'number' );
-		$this->registrationTime = $this->validateType( 'DateTime', $date, 'registrationTime' );
 		$this->phrase = $this->validateType( 'string', $phrase, 'phrase' );
-		$this->author = $this->validateType( 'Person', $author, 'author' );
-	}
-
-	public function id( ) {
-		return $this->id;
-	}
-	
-	public function number( ) {
-		return $this->number;
-	}
-	
-	public function registrationTime( ) {
-		return $this->registrationTime;
-	}
-	
-	public function phrase( ) {
-		return $this->phrase;
+		$this->registrationTime = $this->validateType( 'DateTime', $registrationTime, 'registrationTime' );
 	}
 
 	public function author( ) {
 		return $this->author;
 	}
-	
+
+	public function id( ) {
+		return $this->id;
+	}
+
+	public function number( ) {
+		return $this->number;
+	}
+
+	public function phrase( ) {
+		return $this->phrase;
+	}
+
+	public function registrationTime( ) {
+		return $this->registrationTime;
+	}
+
 	private function validateType( $type, $value, $name ) {
 		$actualType = gettype( $value );
 		if( $actualType == 'object' ) {
