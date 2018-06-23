@@ -11,6 +11,8 @@
 <script>
 import firebase from 'firebase';
 
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
 export default {
   name: 'signUp',
   data() {
@@ -23,8 +25,11 @@ export default {
     signUp() {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => alert('account created'), err => alert(err.message)); // eslint-disable-line
+        .signInWithPopup(googleProvider)
+        .then(
+          result => alert(JSON.stringify(result.user)),  // eslint-disable-line
+          err => alert(err.message), // eslint-disable-line
+        );
     },
   },
 };
