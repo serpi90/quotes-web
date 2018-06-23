@@ -1,30 +1,35 @@
 <template>
   <div class="login">
-    <h3>Sign In</h3>
-    <input v-model="email" type="text" placeholder="Email"/>
-    <input v-model="password" type="password" placeholder="Password"/>
-    <button v-on:click="signIn">Connection</button>
-    <p>You don't have an account? You can <router-link to="/sign-up">create one</router-link></p>
+    <div>
+      <img id="logo"
+        src="../assets/logo.svg"
+        onerror="this.src='../assets/logo.png'; this.onerror=null;"/>
+    </div>
+    <button type="button" class="btn btn-lg btn-primary" v-on:click="signIn">Sign In</button>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export default {
   name: 'login',
   data() {
-    return {
-      email: '',
-      password: '',
-    };
+    return {};
   },
   methods: {
     signIn() {
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(() => this.$router.replace('hello'));
+        .signInWithRedirect(googleProvider)
+        .then(
+          result => JSON.stringify(result.user.displayName),
+          err => alert(err.message), // eslint-disable-line
+        )
+        .then(() => this.$router.replace('by-year'));
     },
   },
 };
@@ -32,4 +37,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#logo {
+  width: 300px;
+  max-width: calc(100vw - 6em);
+  margin: 3em;
+}
 </style>
