@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueFire from 'vuefire';
+import VueLodash from 'vue-lodash';
 import firebase from 'firebase/app';
 
 import App from './App';
 import router from './router';
 
-
 Vue.config.productionTip = false;
-
+Vue.use(VueLodash);
 Vue.use(VueFire);
 
 // Initialize Firebase

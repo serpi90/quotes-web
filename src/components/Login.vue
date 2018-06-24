@@ -1,11 +1,11 @@
 <template>
-  <div class="login">
-    <div>
-      <img id="logo"
-        src="../assets/logo.svg"
+  <div class="login text-center">
+    <!-- <div>
+      <img id="logo" src="../assets/logo.svg"
         onerror="this.src='../assets/logo.png'; this.onerror=null;"/>
-    </div>
-    <button type="button" class="btn btn-lg btn-primary" v-on:click="signIn">Sign In</button>
+    </div> -->
+    <button id="login" type="button" class="btn btn-lg btn-primary"
+      v-on:click="signIn">Sign In</button>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ import 'firebase/auth';
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export default {
-  name: 'login',
+  name: 'Login',
   data() {
     return {};
   },
@@ -37,9 +37,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#logo {
-  width: 300px;
-  max-width: calc(100vw - 6em);
+/* #logo {
   margin: 3em;
+  filter: invert(100%);
+  height: 15em;
+  max-width: calc(100vw - 6em);
+  max-height: calc(50vh - 3em - 3em);
+} */
+#login {
+  position: absolute;
+  height: 3em;
+  top: calc(50vh - 1.5em);
+  width: 10em;
+  left: calc(50vw - 5em);
 }
 </style>
