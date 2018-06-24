@@ -38,12 +38,18 @@ export default {
       people: firebase.database().ref('people'),
       quotes: {
         source: this.quotesForYear(this.year),
-        readyCallback: () => { this.loading = false; },
+        readyCallback: () => {
+          this.loading = false;
+        },
       },
-      firstQuote: firebase.database().ref('quotes')
+      firstQuote: firebase
+        .database()
+        .ref('quotes')
         .orderByChild('date')
         .limitToFirst(1),
-      lastQuote: firebase.database().ref('quotes')
+      lastQuote: firebase
+        .database()
+        .ref('quotes')
         .orderByChild('date')
         .limitToLast(1),
     };
@@ -56,27 +62,36 @@ export default {
         'quotes',
         this.quotesForYear(parseInt(newYear, 10)),
         null,
-        () => { this.loading = false; },
+        () => {
+          this.loading = false;
+        },
       );
     },
   },
   computed: {
     minYear() {
       if (this.firstQuote[0]) {
-        return Math.min(new Date(this.firstQuote[0].date).getUTCFullYear(), this.year);
+        return Math.min(
+          new Date(this.firstQuote[0].date).getUTCFullYear(),
+          this.year,
+        );
       }
       return this.year;
     },
     maxYear() {
       if (this.lastQuote[0]) {
-        return Math.max(new Date(this.lastQuote[0].date).getUTCFullYear(), this.year);
+        return Math.max(
+          new Date(this.lastQuote[0].date).getUTCFullYear(),
+          this.year,
+        );
       }
       return this.year;
     },
   },
   methods: {
     quotesForYear(year) {
-      return firebase.database()
+      return firebase
+        .database()
         .ref('quotes')
         .orderByChild('date')
         .startAt(Date.UTC(year, 0))

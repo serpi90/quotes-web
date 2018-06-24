@@ -21,7 +21,8 @@ export default {
   name: 'NavBar',
   methods: {
     logout() {
-      firebase.auth()
+      firebase
+        .auth()
         .signOut()
         .then(() => this.$router.replace('login'));
     },
