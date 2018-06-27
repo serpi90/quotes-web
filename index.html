@@ -4,7 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Julian Maestri">
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" media="screen">
-<!--<link rel="stylesheet" href="css/bootstrap.min.css" media="screen">-->
 <link rel="stylesheet" href="css/select2.css">
 <link rel="stylesheet" href="css/quotes.css">
 <header class="navbar navbar-inverse">
@@ -20,17 +19,15 @@
     <ul class="nav navbar-nav">
       <li>
         <a class="navbar-brand" href="#new-quote" data-toggle="modal">Nueva Quote</a>
+      </li>
     </ul>
     <form class="navbar-form form-inline">
       <div id="navbar-quotes-group" class="input-group">
         <span class="input-group-addon">Ver</span>
         <select id="navbar-select" class="input form-control" placeholder="Quoted">
-            <optgroup id="opt-years" label="Años">
-            </optgroup>
-            <optgroup id="opt-mcp" label="Personas Actuales">
-            </optgroup>
-            <optgroup id="opt-exmcp" label="Ex Mercap">
-            </optgroup>
+          <optgroup id="opt-years" label="Años"></optgroup>
+          <optgroup id="opt-mcp" label="Personas Actuales"></optgroup>
+          <optgroup id="opt-exmcp" label="Ex Mercap"></optgroup>
         </select>
       </div>
     </form>
@@ -51,11 +48,11 @@
       </div>
       <div id="new-quote-body" class="modal-body">
         <form class="form" method="POST" action="#">
-          <textarea id="new-quote-quote" class="form-control" rows="3" placeholder="Quote - "Firma" Apellido"></textarea>
+          <textarea id="new-quote-quote" class="form-control" rows="3" placeholder="Quote - " Firma " Apellido"></textarea>
           <div class="input-group">
             <select id="new-quote-quoted" class="form-control" multiple></select>
             <span class="input-group-addon">
-              <input type="checkbox" id="new-quote-quoted-all" title="Mostrar Ex-Mercap">
+              <input type="checkbox" id="new-quote-quoted-all" title="Mostrar Ex-Mercap" />
             </span>
           </div>
         </form>
@@ -70,12 +67,11 @@
     </div>
   </div>
 </div>
-<!-- <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script> -->
-<!-- <script src="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script> -->
-<script src="//code.jquery.com/jquery.min.js"></script>
 <!--<script src="js/jquery.min.js"></script>-->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery.min.js"></script>
 <!--<script src="js/bootstrap.min.js"></script>-->
-<script src="js/select2.min.js"></script><!-- Using Select2 v3.4.3 -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!-- Using Select2 v3.4.3 -->
+<script src="js/select2.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/quotes.js"></script>

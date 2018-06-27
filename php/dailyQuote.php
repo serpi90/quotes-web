@@ -8,4 +8,3 @@ $dq = $qr->getDailyQuote( );
 
 sendMail( '&nbsp;&nbsp;&nbsp;&nbsp;<i>'.$dq->number( ).') '.$dq->quote( ).'</i>' , $dailyQuoteSubject );
 ?>
-

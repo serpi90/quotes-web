@@ -5,7 +5,7 @@
       $_REQUEST['t'] != $_SESSION['token'] ) {
     $result['error'] = TRUE;
     $result['errorCode'] = 1;
-		$result['errorDescription'] = 'No autenticado';
+    $result['errorDescription'] = 'No autenticado';
     die(json_encode($result));
   }
 ?>

@@ -1,63 +1,63 @@
 <?php
 class QuotedRepository {
 
-	private $db_connection;
-	private $quoted;
-	private $filteredQuoted;
-	private $statements;
+  private $db_connection;
+  private $quoted;
+  private $filteredQuoted;
+  private $statements;
 
-	public function __construct( $db_connection ) {
-		$this->db_connection = $db_connection;
-		$this->quoted = array( );
-		$this->filteredQuoted = array( );
-		$this->statements = array( );
-		$this->fetchAllQuoted( );
-	}
+  public function __construct( $db_connection ) {
+    $this->db_connection = $db_connection;
+    $this->quoted = array( );
+    $this->filteredQuoted = array( );
+    $this->statements = array( );
+    $this->fetchAllQuoted( );
+  }
   
   public function __destruct( ) {
-		foreach( $this->statements as $s ) {
-			$s->close( );
-		}
-	}
+    foreach( $this->statements as $s ) {
+      $s->close( );
+    }
+  }
 
-	private function fetchAllQuoted( ) {
-		$result = $this->db_connection->query("SELECT * from Quoted ORDER BY name ASC");
-		while( $quoted = $result->fetch_object( 'Quoted' ) ) {
-			$this->quoted[ $quoted->idQuoted( ) ] = $quoted;
-			if( $quoted->display( ) ) {
-				$this->filteredQuoted[ $quoted->idQuoted( ) ] = $quoted;
-			}
-		}
-		$result->free( );
-		$result = $this->db_connection->query("SELECT * from QuotedAlias");
-		while( $alias = $result->fetch_object( ) ) {
-			$this->quoted[ $alias->idQuoted ]->addAlias( $alias->alias );
-		}
-	}
+  private function fetchAllQuoted( ) {
+    $result = $this->db_connection->query("SELECT * from Quoted ORDER BY name ASC");
+    while( $quoted = $result->fetch_object( 'Quoted' ) ) {
+      $this->quoted[ $quoted->idQuoted( ) ] = $quoted;
+      if( $quoted->display( ) ) {
+        $this->filteredQuoted[ $quoted->idQuoted( ) ] = $quoted;
+      }
+    }
+    $result->free( );
+    $result = $this->db_connection->query("SELECT * from QuotedAlias");
+    while( $alias = $result->fetch_object( ) ) {
+      $this->quoted[ $alias->idQuoted ]->addAlias( $alias->alias );
+    }
+  }
 
-	public function getQuotedWithId( $idQuoted ) {
-		if( !isset( $this->quoted[ $idQuoted ] ) ) {
-			throw new OutOfRangeException( $idQuoted );
-		}
-		return $this->quoted[ $idQuoted ];
-	}
+  public function getQuotedWithId( $idQuoted ) {
+    if( !isset( $this->quoted[ $idQuoted ] ) ) {
+      throw new OutOfRangeException( $idQuoted );
+    }
+    return $this->quoted[ $idQuoted ];
+  }
 
-	public function getFilteredQuoted( ) {
-		return $this->filteredQuoted;
-	}
+  public function getFilteredQuoted( ) {
+    return $this->filteredQuoted;
+  }
 
-	public function getAllQuoted( ) {
-		return $this->quoted;
-	}
+  public function getAllQuoted( ) {
+    return $this->quoted;
+  }
 
-	public function addQuoted( $name, $aliases ) {
+  public function addQuoted( $name, $aliases ) {
     $namesToValidate = $aliases;
     array_push( $namesToValidate, $name );
     $this->validateNames( $namesToValidate );
     $idQuoted = $this->insertQuoted( $name );
     $this->insertAliases( $idQuoted, $aliases );
     return $idQuoted;
-	}
+  }
 
   private function validateNames( $names ) {
     $errors = '';
@@ -66,7 +66,7 @@ class QuotedRepository {
         $errors .= ( empty( $errors ) ? '' : ' / ' ) . $name;
       }
     }
-		if( !empty( $errors ) ) {
+    if( !empty( $errors ) ) {
       throw new DomainException( $errors );
     }
   }
@@ -90,30 +90,30 @@ class QuotedRepository {
       $this->statements['insertAlias']->execute( ) or die( $this->statements['insertAlias']->error );
     }
   }
-	
-	private function quotedByNameOrAlias( $nameOrAlias ) {
-		foreach( $this->quoted as $q ) {
-			if( strtoupper( $q->name( ) ) == strtoupper( $nameOrAlias ) ) {
-				return $q;
-			} else {
-				foreach( $q->alias( ) as $alias ) {
-					if( strtoupper( $alias ) == strtoupper( $nameOrAlias ) ) {
-						return $q;
-					}
-				}
-			}
-		}
-		throw new OutOfRangeException( "$nameOrAlias not in quoted repository." );
-	}
-	
-	private function existsQuotedNameOrAlias( $nameOrAlias ) {
-		try {
+  
+  private function quotedByNameOrAlias( $nameOrAlias ) {
+    foreach( $this->quoted as $q ) {
+      if( strtoupper( $q->name( ) ) == strtoupper( $nameOrAlias ) ) {
+        return $q;
+      } else {
+        foreach( $q->alias( ) as $alias ) {
+          if( strtoupper( $alias ) == strtoupper( $nameOrAlias ) ) {
+            return $q;
+          }
+        }
+      }
+    }
+    throw new OutOfRangeException( "$nameOrAlias not in quoted repository." );
+  }
+  
+  private function existsQuotedNameOrAlias( $nameOrAlias ) {
+    try {
       $this->quotedByNameOrAlias( $nameOrAlias );
     } catch ( OutOfRangeException $e ) {
       return false;
     }
     return true;
-	}
+  }
   
   private function updateQuoted( $idQuoted, $name, $active ) {
     if( !isset($this->statements['updateQuoted']) or $this->statements['updateQuoted'] === null ) {

@@ -14,4 +14,3 @@ $newQuoteSubject = 'Quote Fresca!!!!';
 $dailyQuoteSubject = 'La Quote del dia';
 
 ?>
-

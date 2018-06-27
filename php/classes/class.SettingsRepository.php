@@ -1,13 +1,13 @@
 <?php
 class SettingsRepository {
 
-	private $db_connection;
+  private $db_connection;
   private $passwordHash;
 
-	public function __construct( $db_connection ) {
-		$this->db_connection = $db_connection;
+  public function __construct( $db_connection ) {
+    $this->db_connection = $db_connection;
     
-	}
+  }
 
   public function passwordHash( ) {
     if( $this->passwordHash === NULL ) {

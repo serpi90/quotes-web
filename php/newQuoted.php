@@ -1,11 +1,11 @@
 <?php
   require_once('auth.php');
-	if( !isset($_REQUEST['name']) or empty($_REQUEST['name']) ) {
-		$result['error'] = TRUE;
-		$result['errorDescription'] = 'No se ingreso nombre';
-		$result['errorDetail'] = 'Parametro: `name` ausente';
-		die(json_encode($result));
-	}
+  if( !isset($_REQUEST['name']) or empty($_REQUEST['name']) ) {
+    $result['error'] = TRUE;
+    $result['errorDescription'] = 'No se ingreso nombre';
+    $result['errorDetail'] = 'Parametro: `name` ausente';
+    die(json_encode($result));
+  }
 
   $name = utf8_decode( $_REQUEST['name'] );
   $aliases = array( );
@@ -15,18 +15,17 @@
     }
   }
 
-	require_once('header.php');
-	$qdr = new QuotedRepository( $db );
+  require_once('header.php');
+  $qdr = new QuotedRepository( $db );
   
   try {
     $qdr->addQuoted( $name, $aliases );
   } catch (DomainException $e) {
-		$result['error'] = TRUE;
-		$result['errorDescription'] = 'Nombres duplicados: '.$e->getMessage( );
-		die(json_encode($result));
-	}
+    $result['error'] = TRUE;
+    $result['errorDescription'] = 'Nombres duplicados: '.$e->getMessage( );
+    die(json_encode($result));
+  }
 
-	$result['success'] = TRUE;
-	echo json_encode($result);
+  $result['success'] = TRUE;
+  echo json_encode($result);
 ?>
-
