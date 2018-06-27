@@ -1,6 +1,7 @@
 <?php
 require_once('config.php');
-header('Content-Type: application/json');
+/* Changing this would break js so it's reverted, for now */
+// header('Content-Type: application/json');
 function __autoload( $class ) {
   require_once( "classes/class.{$class}.php" );
 }
