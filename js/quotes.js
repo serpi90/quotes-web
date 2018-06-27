@@ -7,53 +7,67 @@ $(document).ready( function()  {
 });
 function NavBarView( quoteRepository, quotesView ) {
   var self = this;
+  function clearQuotedSelection( ) {
+    if( $('#navbar-quoted-list').children( ).size( ) > 0 ) {
+      $('#navbar-quoted-list').children( ).get(0).selected = true;
+     }
+  }
+  function clearYearSelection( ) {
+    if( $('#navbar-years').children( ).size( ) > 0 ) {
+      $('#navbar-years').children( ).get(0).selected = true;
+    }
+  }
   this.init = function( ) {
     // This isn't a callback because it is necessary to know the first year to load the quotes of that year in the first screen.
     self.showYears( quoteRepository.quoteYears( ) );
-    quoteRepository.getQuoted( true, self.loadQuotedList );
-    $('#navbar-select').change( function( event ) {
-      var id = event.target.selectedOptions[0].value;
-      if( id[0] == 'q' ) {
-        var quotedId = event.target.selectedOptions[0].value.slice(1);
-        var quotedName = event.target.selectedOptions[0].textContent;
-        quoteRepository.getQuotesByQuoted( quotedId , function( quotes ) {
-          quotesView.showWithYearSeparation( quotedName,  quotes );
-        });
-      } else {
-        var year = event.target.selectedOptions[0].value;
-        var quotes = quoteRepository.getQuotesFromYear( year, function( quotes ) {
-          quotesView.show( year, quotes );
-        });
-      }
+    quoteRepository.getQuoted( $('#navbar-quoted-all').get(0).checked, self.loadQuotedList );
+    $('#navbar-quoted-list').change( function( event ) {
+      var quotedId = event.target.selectedOptions[0].value;
+      var quotedName = event.target.selectedOptions[0].textContent;
+      clearYearSelection( );
+      quoteRepository.getQuotesByQuoted( quotedId , function( quotes ) {
+        quotesView.showWithYearSeparation( quotedName,  quotes );
+      });
     });
-    $('#navbar-select').change( );
+    $('#navbar-quoted-all').change( function( event ) {
+      quoteRepository.getQuoted( event.target.checked, self.loadQuotedList );
+    });
+    $('#navbar-years').change( function( ) {
+      var year = $('#navbar-years').get( 0 ).selectedOptions[0].value;
+      var quotes = quoteRepository.getQuotesFromYear( year, function( quotes ) {
+        clearQuotedSelection( );
+        quotesView.show( year, quotes );
+      });
+    });
+    $('#navbar-years').change( );
   }
   this.showYears = function( years ) {
-    var optgroup = $('#opt-years');
+    var select = $('#navbar-years');
     var title = new Option( );
-    optgroup.children( ).remove( );
+    select.children( ).remove( );
+    title.text = 'Año';
+    title.disabled = true;
+    select.append( title );
     years.forEach( function( year ) {
       var option = new Option( );
       option.value = year;
       option.text = year;
-      optgroup.append( option );
+      select.append( option );
     });
   }
   this.loadQuotedList = function( quotedCollection ) {
-    var mcp = $('#opt-mcp');
-    var exMcp = $('#opt-exmcp');
+    var select = $('#navbar-quoted-list');
     var title = new Option;
-    mcp.children( ).remove( );
-    exMcp.children( ).remove( );
+    select.children( ).remove( );
+    title.disabled = true;
+    title.selected = true;
+    title.text = 'Seleccione una Persona';
+    select.append( title );
     quotedCollection.forEach( function( each ) {
       var quoted = new Option;
-      quoted.value = 'q' + each.id;
+      quoted.value = each.id;
       quoted.text = each.quoted;
-      if( each.active ) {
-        mcp.append( quoted );
-      } else {
-        exMcp.append( quoted );
-      }
+      select.append( quoted );
     });
   }
   this.init( );
@@ -144,8 +158,6 @@ function QuotesView( ) {
     var head = $(document.createElement('div'));
     var title = $(document.createElement('h4'));
     var anchor = $(document.createElement('a'));
-    var small = $(document.createElement('small'));
-    title.append( year + ' ');
     head.addClass( 'panel-heading' );
     head.addClass( 'no-border-bottom' );
     title.addClass( 'panel-title' );
@@ -153,9 +165,8 @@ function QuotesView( ) {
     anchor.attr( 'data-toggle', 'collapse' );
     anchor.attr( 'data-parent', '#quotes-panel' );
     anchor.attr( 'href' , '#y'+year );
-    anchor.text( '[ ver / ocultar ]' );
-    small.append( anchor );
-    title.append( small );
+    anchor.text( year );
+    title.append( anchor );
     head.append( title );
     return head;
   }
