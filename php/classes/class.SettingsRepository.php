@@ -6,7 +6,7 @@ class SettingsRepository {
 
   public function __construct( $db_connection ) {
     $this->db_connection = $db_connection;
-    
+
   }
 
   public function passwordHash( ) {

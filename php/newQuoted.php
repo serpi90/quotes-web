@@ -17,7 +17,7 @@
 
   require_once('header.php');
   $qdr = new QuotedRepository( $db );
-  
+
   try {
     $qdr->addQuoted( $name, $aliases );
   } catch (DomainException $e) {

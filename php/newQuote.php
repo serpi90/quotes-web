@@ -63,6 +63,6 @@
   $authors = implode(", ", array_map(function ($author) { return $author->name(); }, $quoted));
   $message = 'Quote Fresca: ' . utf8_encode($quote) . "\n- _{$authors}_";
   foreach( $telegram['chat_ids'] as $chatId ) {
-    $bot->sendMessage( $chatId, $message, true); 
+    $bot->sendMessage( $chatId, $message, true);
   }
 ?>

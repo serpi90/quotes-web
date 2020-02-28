@@ -13,7 +13,7 @@ class QuotedRepository {
     $this->statements = array( );
     $this->fetchAllQuoted( );
   }
-  
+
   public function __destruct( ) {
     foreach( $this->statements as $s ) {
       $s->close( );
@@ -70,7 +70,7 @@ class QuotedRepository {
       throw new DomainException( $errors );
     }
   }
-  
+
   private function insertQuoted( $name ) {
     if( !isset($this->statements['insertQuoted']) or $this->statements['insertQuoted'] === null ) {
       $this->statements['insertQuoted'] = $this->db_connection->prepare("INSERT INTO Quoted (name) VALUES (?)");
@@ -80,7 +80,7 @@ class QuotedRepository {
 
     return $this->statements['insertQuoted']->insert_id;
   }
-  
+
   private function insertAliases( $idQuoted, $aliases ) {
     foreach( $aliases as $alias ) {
       if( !isset($this->statements['insertAlias']) or $this->statements['insertAlias'] === null ) {
@@ -90,7 +90,7 @@ class QuotedRepository {
       $this->statements['insertAlias']->execute( ) or die( $this->statements['insertAlias']->error );
     }
   }
-  
+
   private function quotedByNameOrAlias( $nameOrAlias ) {
     foreach( $this->quoted as $q ) {
       if( strtoupper( $q->name( ) ) == strtoupper( $nameOrAlias ) ) {
@@ -105,7 +105,7 @@ class QuotedRepository {
     }
     throw new OutOfRangeException( "$nameOrAlias not in quoted repository." );
   }
-  
+
   private function existsQuotedNameOrAlias( $nameOrAlias ) {
     try {
       $this->quotedByNameOrAlias( $nameOrAlias );
@@ -114,7 +114,7 @@ class QuotedRepository {
     }
     return true;
   }
-  
+
   private function updateQuoted( $idQuoted, $name, $active ) {
     if( !isset($this->statements['updateQuoted']) or $this->statements['updateQuoted'] === null ) {
       $this->statements['updateQuoted'] = $this->db_connection->prepare("UPDATE Quoted SET name = ?, display = ? WHERE idQuoted = ?");
@@ -122,7 +122,7 @@ class QuotedRepository {
     $this->statements['updateQuoted']->bind_param( 'sii', $name, $active, $idQuoted ) or die( $this->statements['updateQuoted']->error );
     $this->statements['updateQuoted']->execute( ) or die( $this->statements['updateQuoted']->error );
   }
-  
+
   public function removeAliasesOf( $idQuoted ) {
     if( !isset($this->statements['removeAliases']) or $this->statements['removeAliases'] === null ) {
         $this->statements['removeAliases'] = $this->db_connection->prepare("DELETE FROM QuotedAlias WHERE idQuoted = ?");
@@ -131,7 +131,7 @@ class QuotedRepository {
       $this->statements['removeAliases']->execute( ) or die( $this->statements['removeAliases']->error );
       $quoted = $this->getQuotedWithId( $idQuoted )->clearAliases( );
   }
-  
+
   public function editQuoted( $idQuoted, $name, $active ) {
     $quoted = $this->getQuotedWithId( $idQuoted );
     if( $name !== $quoted->name( ) && $this->existsQuotedNameOrAlias( $name ) ) {
@@ -140,7 +140,7 @@ class QuotedRepository {
       $this->updateQuoted( $idQuoted, $name, $active );
     }
   }
-  
+
   public function editQuotedAliases( $idQuoted, $aliases ) {
     $this->validateNames( $aliases );
     $this->insertAliases( $idQuoted, $aliases );

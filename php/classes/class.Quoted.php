@@ -34,7 +34,7 @@ class Quoted {
   public function alias( ) {
     return $this->alias;
   }
-  
+
   public function clearAliases( ) {
     $this->alias = array( );
   }

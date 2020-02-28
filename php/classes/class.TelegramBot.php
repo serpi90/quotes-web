@@ -5,7 +5,7 @@ class TelegramBot {
   private $apiURL;
 
   public function __construct( $token ) {
-    $this->token = $token;  
+    $this->token = $token;
     $this->apiURL = 'https://api.telegram.org/bot'.$this->token.'/';
   }
 
@@ -13,7 +13,7 @@ class TelegramBot {
     $parameters = array('chat_id' => $chatId, "text" => $message );
     if( $markdown ) {
       $parameters['parse_mode'] = 'Markdown';
-    } 
+    }
     return $this->apiRequest("sendMessage", $parameters );
   }
 
