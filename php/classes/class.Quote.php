@@ -36,7 +36,8 @@ class Quote {
   }
 
   public function addQuoted( $quoted ) {
-    if( !isset( $this->quoted[ $quoted->idQuoted( ) ] ) ) {
+    $ids = array_map(function ($q) { return $q->idQuoted( ); }, $this->quoted);
+    if( !in_array($quoted->idQuoted( ), $ids) ) {
       array_push( $this->quoted, $quoted );
     }
   }

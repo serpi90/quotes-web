@@ -40,14 +40,15 @@ class Quoted {
   }
 
   public function addQuote( $quote ) {
-    if( !isset( $this->quotes[ $quote->idQuote( ) ] ) ) {
+    $ids = array_map(function ($q) { return $q->idQuote( ); }, $this->quotes);
+    if( !in_array($quote->idQuote( ), $ids) ) {
       array_push( $this->quotes, $quote );
     }
   }
 
   public function addAlias( $alias ) {
     $alias = utf8_encode( $alias );
-    if( !isset( $this->alias[ $alias ] ) ) {
+    if( !in_array( $alias, $this->alias ) ) {
       array_push( $this->alias, $alias );
     }
   }
