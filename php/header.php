@@ -28,4 +28,5 @@ function sendMail( $message, $subject ) {
 }
 
 $db = new Database( $db_server, $db_user, $db_pass, $db_name );
+header("Content-type: application/json; charset=utf-8");
 ?>

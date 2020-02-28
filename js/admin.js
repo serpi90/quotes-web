@@ -78,12 +78,11 @@ function SecurityManager() {
       url: 'php/login.php',
       data: { 'phash': md5(password) },
       success : function (json) {
-        var result = jQuery.parseJSON(json);
-        if (result.error) {
-          jQuery('#login-danger').text(result.errorDescription);
+        if (json.error) {
+          jQuery('#login-danger').text(json.errorDescription);
           jQuery('#login-danger').show();
         } else {
-          self.storage.set('token', result.token);
+          self.storage.set('token', json.token);
           jQuery('#login-danger').hide();
           jQuery('#login').modal('hide');
         }
@@ -241,10 +240,9 @@ function QuoteView( loginWindow, editQuoteWindow ) {
           url: 'php/deleteQuote.php',
           data: { t: self.loginWindow.securityManager.token(), n: quote.number },
           success : function (json) {
-            var result = jQuery.parseJSON(json);
-            if (result.error) {
-              alert(result.errorDescription);
-              if (result.errorCode === 1) {
+            if (json.error) {
+              alert(json.errorDescription);
+              if (json.errorCode === 1) {
                 self.loginWindow.open();
               }
             } else {
@@ -356,11 +354,10 @@ function EditQuoteWindow( loginWindow ) {
       url: 'php/editQuote.php',
       data: { t: self.loginWindow.securityManager.token(), n: number, quote: text, quoted: ids },
       success : function (json) {
-        var result = jQuery.parseJSON(json);
-        if (result.error) {
-          jQuery('#edit-quote-danger').text( result.errorDescription );
+        if (json.error) {
+          jQuery('#edit-quote-danger').text( json.errorDescription );
           jQuery('#edit-quote-danger').show( );
-          if (result.errorCode === 1) {
+          if (json.errorCode === 1) {
             self.loginWindow.open();
           }
         } else {
@@ -373,7 +370,7 @@ function EditQuoteWindow( loginWindow ) {
       }
     });
   }
-  
+
   this.open = function (quote, quotedList) {
     return function () {
       var quoted;
@@ -401,7 +398,7 @@ function EditQuoteWindow( loginWindow ) {
       jQuery("#edit-quote-quoted").select2();
     };
   }
-  
+
   jQuery('#edit-quote-submit').click( function() {
     var quote, number, ids, options, i;
     quote = jQuery('#edit-quote-text').val( );
@@ -429,11 +426,10 @@ function EditQuotedWindow(loginWindow, quotedView) {
       url: 'php/editQuoted.php',
       data: { t: self.loginWindow.securityManager.token(), id: id, name: name, aliases: aliases, active: active },
       success : function (json) {
-        var result = jQuery.parseJSON(json);
-        if (result.error) {
-          jQuery('#edit-quoted-danger').text( result.errorDescription );
+        if (json.error) {
+          jQuery('#edit-quoted-danger').text( json.errorDescription );
           jQuery('#edit-quoted-danger').show( );
-          if (result.errorCode === 1) {
+          if (json.errorCode === 1) {
             self.loginWindow.open();
           }
         } else {
@@ -458,11 +454,10 @@ function NewQuotedWindow(loginWindow) {
       url: 'php/newQuoted.php',
       data: { t: self.loginWindow.securityManager.token(), name: name, aliases: aliases },
       success : function (json) {
-        var result = jQuery.parseJSON(json);
-        if (result.error) {
-          jQuery('#new-quoted-danger').text( result.errorDescription );
+        if (json.error) {
+          jQuery('#new-quoted-danger').text( json.errorDescription );
           jQuery('#new-quoted-danger').show( );
-          if (result.errorCode === 1) {
+          if (json.errorCode === 1) {
             self.loginWindow.open();
           }
         } else {

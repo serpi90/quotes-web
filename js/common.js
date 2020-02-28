@@ -7,9 +7,7 @@ function QuoteRepository() {
         type: 'GET',
         url: 'php/quotesByYear.php',
         data: { y: year },
-        success: function (json) {
-          callback(jQuery.parseJSON(json));
-        }
+        success: callback,
       });
     } else {
       return jQuery.parseJSON(jQuery.ajax({
@@ -26,9 +24,7 @@ function QuoteRepository() {
         type: 'GET',
         url: 'php/quotesByQuoted.php',
         data: { q: quotedID },
-        success: function (json) {
-          callback(jQuery.parseJSON(json));
-        }
+        success: callback,
       });
     } else {
       var json = jQuery.ajax({
@@ -37,7 +33,7 @@ function QuoteRepository() {
         data: { q: quotedID },
         async: false
       }).responseText;
-      return jQuery.parseJSON(json);
+      return json;
     }
   };
   this.addQuote = function (quote, quotedIDs, callback) {
@@ -49,9 +45,7 @@ function QuoteRepository() {
           'quoted[]': quotedIDs,
           "quote": quote
         },
-        success: function (json) {
-          callback(jQuery.parseJSON(json));
-        }
+        success: callback,
       });
     } else {
       var json = jQuery.ajax({
@@ -63,7 +57,7 @@ function QuoteRepository() {
         },
         async: false
       }).responseText;
-      return jQuery.parseJSON(json);
+      return json;
     }
   };
   this.getQuoted = function (getAll, callback) {
@@ -73,9 +67,7 @@ function QuoteRepository() {
         type: 'GET',
         url: 'php/quoted.php',
         data: data,
-        success: function (json) {
-          callback(jQuery.parseJSON(json));
-        }
+        success: callback,
       });
     } else {
       return jQuery.parseJSON(jQuery.ajax({
@@ -90,9 +82,7 @@ function QuoteRepository() {
     if (callback && typeof callback === 'function') {
       jQuery.ajax({
         url: 'php/quoteYears.php',
-        success: function (json) {
-          callback(jQuery.parseJSON(json));
-        }
+        success: callback,
       });
     } else {
       return jQuery.parseJSON(jQuery.ajax({
