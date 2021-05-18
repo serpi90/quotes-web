@@ -65,4 +65,7 @@
   foreach( $telegram['chat_ids'] as $chatId ) {
     $bot->sendMessage( $chatId, $message, true);
   }
+
+  $slack = new SlackWebhook($slackWebhook);
+  $slack->send($message);
 ?>
